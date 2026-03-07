@@ -1,0 +1,16 @@
+import { getCreateUnit } from "@/src/api/Api";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import {toast} from "react-hot-toast";
+export const useCreateUnit = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: any) => getCreateUnit(data),
+    onSuccess: () => {
+      toast.success('Unit Created Successfully!')
+      queryClient.invalidateQueries({ queryKey: ["units"] });
+    },
+    onError:()=>{
+      toast.error('Failed to delete unit.')
+    }
+  });
+};

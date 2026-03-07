@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Poppins } from "next/font/google";
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+import QueryProvider from "@/src/providers/QueryProvider";
+import Sidebar from "@/src/components/layout/Sidebar";
+import Navbar from "@/src/components/layout/Navbar";
+import {Toaster} from 'react-hot-toast'
+const poppins = Poppins({
+  variable: "--font-poppins",
+  weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
 });
 
@@ -23,11 +22,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={poppins.className}>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+        className={`${poppins.variable} overflow-hidden`}>
+        <QueryProvider>
+          <Toaster position="top-right" reverseOrder={true} />
+          <Sidebar />
+          <div className="ml-[249px] overflow-y-auto h-screen">
+            <Navbar />
+            {children}
+          </div>
+        </QueryProvider>
       </body>
     </html>
   );
