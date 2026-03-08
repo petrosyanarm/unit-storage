@@ -39,14 +39,7 @@ export default function EditUnitForm({ unitId }: Props) {
     } = useForm<UnitFormValues>({
         resolver: zodResolver(unitSchema),
         defaultValues: {
-            // name: "",
-            // facilityId: 0,
-            // unitDimensionsId: 0,
-            // pricingGroupId: 0,
             rentable: true,
-            // rentableReason: "",
-            // width: 0,
-            // height: 0,
             filters: [
                 { filterId: 1, selectedOptions: [] },
                 { filterId: 2, selectedOptions: [] },
@@ -61,26 +54,26 @@ export default function EditUnitForm({ unitId }: Props) {
     console.log({ unit })
     console.log({ unitId });
     useEffect(() => {
-        
         if (!unit) return;
         reset({
-            // "name": "Unit A",
-            // "facilityId": 1,
-            // "pricingGroupId": 4,
-            // "rentable": true,
-            // "width": 5,
-            // "height": 3,
-            // "unitDimensionsId": 1,
-            // "rentableReason": "Available for leasing",
-            name: unit?.name ?? "",
-            facilityId: unit?.facility?.id ?? 0,
-            unitDimensionsId: unit?.unitDimensions?.id ?? 0,
-            pricingGroupId: unit?.pricingGroup?.id ?? 0,
-            rentable: unit?.rentable ?? true,
-            width: unit?.doorWidth,
-            height: unit?.doorHeight,
-            rentableReason: unit?.rentableReason ?? "Available for leasing"
-
+        name: unit[0].name ?? "",
+        facilityId: unit[0].facility?.id ?? 0,
+        unitDimensionsId: unit[0].unitDimensions?.id ?? 0,
+        pricingGroupId: unit[0].pricingGroup?.id ?? 0,
+        rentable: unit[0].rentable ?? true,
+        width: unit[0].doorWidth,
+        height: unit[0].doorHeight,
+        rentableReason: unit?.rentableReason ?? "Available for leasing",
+        filters: [
+    { 
+        filterId: 1, 
+        selectedOptions: unit[0].filters[0].selectedOptions?.map(opt => opt.id) ?? [] 
+    },
+    { 
+        filterId: 2, 
+        selectedOptions: unit[0].filters[1].selectedOptions?.map(opt => opt.id) ?? [] 
+    },
+]
         })
     }, [unit, reset]);
     const { data: dimensions } = useDimensions();
@@ -161,7 +154,7 @@ export default function EditUnitForm({ unitId }: Props) {
             </div>
             <div>
                 <FormSelect
-                    name="filters.0.selectedOptions"
+                    name="filters.selectedOptions"
                     control={control}
                     label="Unit Type"
                     options={unitTypeOptions}

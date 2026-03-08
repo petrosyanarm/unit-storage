@@ -10,7 +10,7 @@ export const useCreateUnit = () => {
       queryClient.invalidateQueries({ queryKey: ["units"] });
     },
     onError:()=>{
-      toast.error('Failed to delete unit.')
+      toast.error('Failed to create unit.')
     }
   });
 };

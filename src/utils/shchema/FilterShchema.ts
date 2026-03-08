@@ -2,7 +2,7 @@ import { z } from "zod";
 export const filterShchema = z.object({
   minPrice: z.coerce
     .number()
-    // .min(0, "Minimum must be greater than 0")
+    .min(0, "Minimum must be greater than 0")
     .optional(),
 
   maxPrice: z.coerce
