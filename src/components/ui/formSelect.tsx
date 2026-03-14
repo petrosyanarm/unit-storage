@@ -1,5 +1,7 @@
+import { useFacilityStore } from "@/src/store/useFacilityStore";
 import { Controller, Control, FieldError } from "react-hook-form";
 import Select from "react-select";
+import { components } from 'react-select';
 type Option = {
     value: number | string;
     label: string;
@@ -13,9 +15,13 @@ type FormSelectProps = {
     classNames?: any;
     placeholder: string;
     error?: FieldError;
-    multi?: boolean
+    multi?: boolean;
+    isLoading?:boolean,
+    isDisabled?:boolean
+    onFacilityChange?: (value: number | null) => void;
 }
-export default function FormSelect({ name, label, required, control, options, classNames, placeholder, error, multi }: FormSelectProps) {
+export default function FormSelect({ name, label, required, control, options, classNames, placeholder, error, multi, onFacilityChange,isLoading,isDisabled, components }: FormSelectProps) {
+    const setFacilityId = useFacilityStore((state) => state.setFacilityId);
     return (
         <div>
             <label className="font-medium text-sm leading-[160%] text-[rgba(71,85,105,1)]">
@@ -30,8 +36,17 @@ export default function FormSelect({ name, label, required, control, options, cl
                         value={options?.find(
                             option => option.value === field.value
                         )}
-                        onChange={option => field.onChange(option?.value ?? null)}
+                        onChange={(option: any) => {
+                            const value = option?.value ?? null;
+                            field.onChange(value);
+                            setFacilityId(value);
+                            onFacilityChange?.(value);
+                            console.log("Selected facilityId:", value);
+                        }}
                         isMulti={multi}
+                        components={components}
+                        isLoading={isLoading}
+                        isDisabled={isDisabled}
                     />
                 )}
             />

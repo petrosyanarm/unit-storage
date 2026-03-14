@@ -7,7 +7,6 @@ import NavbarUser from '@/public/assets/images/navbarUser.png'
 import { useState } from 'react'
 import {Button} from '@/src/components/ui/button'
 import { twMerge } from 'tailwind-merge'
-
 export default function SidebarMenu() {
     const [openDropdown, setOpendropdown] = useState<number | null>(null);
     const [activeOption, setActiveOption] = useState<number | null>(null)
@@ -18,7 +17,7 @@ export default function SidebarMenu() {
                     <li key={item.id} className='px-3 py-3 '>
                         <div onClick={() => setOpendropdown(openDropdown === item.id ? null : item.id)} className='flex items-center justify-between cursor-pointer'>
                             <div className='flex gap-4'>
-                                <Image src={item.icon} width={22} height={22} alt={'link'} />
+                                <item.icon/>
                                 <Link href={'/'} className='text-primary text-base font-medium leading-[150%]' >
                                     {item.title}
                                 </Link>
@@ -26,7 +25,7 @@ export default function SidebarMenu() {
                             {item.id !== 1 &&
                                 <div>
                                     <Button variant={'destructive'} className='mt-1.5'>
-                                        <Image src={item.select} width={22} height={22} alt={'select'} className={twMerge('transition-transform duration-300', openDropdown === item.id ? 'rotate-90' : '')} />
+                                        <item.select className={twMerge('transition-transform duration-300 size-5.5', openDropdown === item.id ? 'rotate-90' : '')} />
                                     </Button>
                                 </div>
                             }
@@ -43,14 +42,14 @@ export default function SidebarMenu() {
             </ul>
             <div className='px-6 flex flex-col gap-4'>
                 <div className='bg-[rgba(255,255,255,1)] border border-[rgba(226,232,240,1)] rounded-xl pl-3 pr-4 py-2'>
-                    <div className='flex gap-4'>
-                        <Image src={Location} width={20} height={20} alt={'location'} />
+                    <div className='flex gap-4 items-center'>
+                        <Location className='size-6'/>
                         <div className='max-w-36.5 w-full rounded-lg bg-[rgba(248,250,252,1)] px-2 py-2'>
                             <span className='text-[11px] leading-[160%] font-medium text-primary'>15 facilities</span>
                         </div>
                     </div>
                 </div>
-                <div className='bg-[rgba(255,255,255,1)] border border-[rgba(226,232,240,1)] rounded-xl'>
+                <div className='bg-[rgba(255,255,255,1)] border border-[rgba(226,232,240,1)] rounded-xl px-3 py-3.5'>
                     <Image src={NavbarUser} width={40} height={40} alt={'user'} className='rounded-full' />
                 </div>
             </div>

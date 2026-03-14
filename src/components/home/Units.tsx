@@ -1,5 +1,7 @@
 "use client"
-import Image from "next/image"
+import Search from "@/public/assets/images/Search.svg"
+import NotificationIcon from "@/public/assets/images/notificationIcon.svg"
+
 export default function Units() {
     return (
         <div className="w-full pl-8 pr-7 py-4 pb-3 flex justify-between border-b border-slate-100 ">
@@ -14,11 +16,11 @@ export default function Units() {
                 <div className="relative py-1">
                     <input type="text" placeholder="Search anything..." className="max-w-68.75 w-full pl-12 py-3 border rounded-xl focus:outline-none border-[rgba(226,232,240,1)] placeholder:text-sm font-normal leading-[160%] text-primary" />
                     <div className="absolute top-5 left-4">
-                        <Image src={'/assets/images/Search.svg'} width={20} height={20} alt={"Logo"} />
+                        <Search className="size-5" />
                     </div>
                 </div>
                 <div className="py-2">
-                    <Image src={'/assets/images/notificationIcon.svg'} width={40} height={40} alt={"Logo"} />
+                    <NotificationIcon className="size-10" />
                 </div>
             </div>
         </div>

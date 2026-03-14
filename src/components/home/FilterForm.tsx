@@ -7,85 +7,24 @@ import Select from 'react-select'
 import { filterShchema, FilterFormValues } from '@/src/utils/shchema/FilterShchema';
 import { Button } from "@/src/components/ui/button";
 import { useUnits } from "@/src/utils/hooks/useUnits";
-import { useEffect, useState } from "react";
 import { useUnitSizes } from "@/src/utils/hooks/useUnitSizes";
 import { twMerge } from "tailwind-merge";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { DrawerClose } from "../ui/drawer";
+import { usePathname, useRouter } from "next/navigation";
+import { DrawerClose, DrawerFooter } from "@/src/components/ui/drawer";
+import useFilterParams from "@/src/utils/hooks/useFilterParams";
+import { selectClassNames } from "@/src/components/ui/selectClassNames";
+import Price from '@/public/assets/images/price.svg'
+import CheckboxOption from "./CheckboxOption";
 export default function FilterForm() {
-    
-    const searchParams = useSearchParams();
     const router = useRouter();
     const pathname = usePathname()
-    const selectClassNames = {
-        control: ({ isFocused }) =>
-            `!h-[56px] !rounded-xl !border-[rgba(226,232,240,1)] ${isFocused && '!border'} !shadow-none !hover:border-blue-400 !mt-2`,
-        placeholder: () => '!text-base !text-[rgba(148,163,184,1)]',
-        singleValue: () => 'text-gray-900 font-medium',
-        menu: () => 'rounded-xl mt-2 shadow-lg',
-        option: ({ isFocused, isSelected }) => `px-4 py-2 cursor-pointer ${isSelected ? 'bg-blue-500 text-white' : ''} ${isFocused && !isSelected ? 'bg-blue-100' : ''}`,
-        indicatorSeparator: () => 'hidden',
-        dropdownIndicator: ({ isFocused }) =>
-            isFocused ? 'text-blue-500' : 'text-gray-400',
-    };
-    const  defaultValues = {
-            minPrice: 0,
-            maxPrice: 120,
-            featuresOptions: [],
-            unitSizesOptions: [],
-            unitTypeId: []
-        }
-    const {
-        register,
-        handleSubmit,
-        setValue,
-        reset,
-        watch,
-        control,
-        formState: { errors, isValid },
-    } = useForm<FilterFormValues>({
-        resolver: zodResolver(filterShchema),
-        defaultValues
-    });
-    const onSubmit = (data: FilterFormValues) => {
-        const params = new URLSearchParams();
-        if (data.minPrice) {
-            params.set("minPrice", String(data.minPrice));
-        }
-        if (data.maxPrice) {
-            params.set("maxPrice", String(data.maxPrice));
-        }
-        if (data.unitSizesOptions) {
-            data?.unitSizesOptions?.forEach((size) => {
-                params.append("sizes", String(size));
-            });
-        }
-        if(data.unitTypeId){
-            data?.unitTypeId.forEach((id)=>{
-                params.append('filters',String(id))
-            })
-        }
-        if (data.featuresOptions) {
-            data?.featuresOptions?.forEach((id) => {
-                params.append("filters", String(id));
-
-            });
-        }
-        router.push(`${pathname}?${params.toString()}`);
-        console.log({ data });
-    }
-    const handleReset = () => {
-        reset(defaultValues)
-        console.log({reset})
-        router.replace(pathname)
-    }
-
     const { data: unitSizes } = useUnitSizes();
     const unitSizesOptions = unitSizes?.data?.map(item => ({
         value: item.id,
         label: item.name
     }))
     const { data: features } = useUnits()
+    const { minPriceQuery, maxPriceQuery, sizes, filters } = useFilterParams();
     const featuresOptions = features?.filterList?.[0]?.filterOptions?.map(item => ({
         value: item.id,
         label: item.name
@@ -94,14 +33,50 @@ export default function FilterForm() {
         value: item.id,
         label: item.name
     }));
+
+    const {
+        handleSubmit,
+        setValue,
+        watch,
+        control,
+        formState: { errors },
+    } = useForm<FilterFormValues>({
+        resolver: zodResolver(filterShchema),
+        defaultValues: {
+            minPrice: minPriceQuery,
+            maxPrice: maxPriceQuery,
+            unitSizesOptions: sizes || [],
+            featuresOptions: filters || [],
+            unitTypeId: filters || []
+        }
+    });
+    const onSubmit = (data: FilterFormValues) => {
+        const params = new URLSearchParams();
+
+        if (data.minPrice) params.set("minPrice", String(data.minPrice));
+        if (data.maxPrice) params.set("maxPrice", String(data.maxPrice));
+
+        data.unitSizesOptions?.forEach(size =>
+            params.append("sizes", String(size))
+        );
+        const uniqueFilters = [...new Set((data.featuresOptions || []).concat(data.unitTypeId || [])
+        )]
+        uniqueFilters.forEach(id =>
+            params.append("filters", String(id))
+        )
+        router.push(`${pathname}?${params.toString()}`);
+    };
+    const handleReset = () => {
+        router.replace(pathname)
+    }
     const minPrice = watch("minPrice");
     const maxPrice = watch("maxPrice");
-    console.log({errors})
+    console.log({ errors });
 
     return (
-        <div>
-            <form className="pt-4 px-4 h-screen flex flex-col justify-between" onSubmit={handleSubmit(onSubmit)}>
-                <div className="space-y-6 ">
+        <div className="max-h-[calc(100vh-168px)]">
+            <form className="pt-4 px-4  flex flex-col justify-between" onSubmit={handleSubmit(onSubmit)}>
+                <div className="space-y-6">
                     <label className="font-medium text-sm leading-[160%] text-[rgba(71,85,105,1)]">
                         Unit Price Range
                     </label>
@@ -113,25 +88,26 @@ export default function FilterForm() {
                         }}
                         max={120}
                         step={1}
-                        className="mx-auto w-full mt-4"
+                        className="mx-auto w-full mt-2"
                     />
                     <div className='flex gap-4'>
-                        <div>
+                        <div className="flex relative">
                             <Controller
-                            name="minPrice"
-                            control={control}
-                            render={({field})=>(
-                                <Input
-                                    label="Minimum"
-                                    type='number'
-                                    {...field}
-                                    placeholder=""
-                                    className="mt-2"
-                                    error={errors.minPrice}
-                                />
-                            )}/>
+                                name="minPrice"
+                                control={control}
+                                render={({ field }) => (
+                                    <Input
+                                        label="Minimum"
+                                        type='number'
+                                        {...field}
+                                        placeholder=""
+                                        className="mt-2 relative appearance-none! [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-moz-appearance]:textfield"
+                                        error={errors.minPrice}
+                                    />
+                                )} />
+                            <Price className="absolute top-10 left-24 size-10" />
                         </div>
-                        <div>
+                        <div className="flex relative">
                             <Controller
                                 name="maxPrice"
                                 control={control}
@@ -140,11 +116,12 @@ export default function FilterForm() {
                                         label="Maximum"
                                         type="number"
                                         {...field}
-                                        className="mt-2"
+                                        className="mt-2 relative appearance-none! [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-moz-appearance]:textfield"
                                         error={errors.maxPrice}
                                     />
                                 )}
                             />
+                            <Price className="absolute top-10 left-24 size-10" />
                         </div>
                     </div>
                     <div>
@@ -156,24 +133,22 @@ export default function FilterForm() {
                                 <Select
                                     options={unitSizesOptions}
                                     classNames={selectClassNames}
-                                    placeholder={'Select Unit Size'}
-                                    value={unitSizesOptions?.find(
-                                        option => option.value === field.value
-                                    )}
+                                    placeholder={'Select Unit Sizes'}
                                     isMulti
-                                    onChange={option => {
-                                        const values = option.map(({ value }) => value)
+                                    isClearable={false}
+                                    components={{ Option: CheckboxOption }}
+                                    closeMenuOnSelect={false}
+                                    hideSelectedOptions={false}
+                                    value={unitSizesOptions?.filter(opt =>
+                                        field.value?.includes(opt.value)
+                                    )}
+                                    onChange={(options) => {
+                                        const values = options.map(({ value }) => value)
                                         field.onChange(values)
                                     }}
                                 />
                             )}
                         />
-                        {/* {errors.filters?.[1]?.selectedOptions && (
-                    <p className="text-red-500 text-sm mt-1">
-                        {errors.filters?.[1]?.selectedOptions.message}
-                    </p>
-                )} */}
-
                     </div>
                     <div>
                         <label className="font-medium text-sm leading-[160%] text-[rgba(71,85,105,1)]">
@@ -185,23 +160,20 @@ export default function FilterForm() {
                                     options={featuresOptions}
                                     classNames={selectClassNames}
                                     placeholder={'Select Features'}
-                                    value={featuresOptions?.find(
-                                        option => option.value === field.value
-                                    )}
                                     isMulti
-                                    onChange={option => {
-                                        const values = option.map(({ value }) => value)
-                                        console.log({ values })
-                                        field.onChange(values)
-                                    }}
+                                    isClearable={false}
+                                    components={{ Option: CheckboxOption }}
+                                    closeMenuOnSelect={false}
+                                    hideSelectedOptions={false}
+                                    value={featuresOptions?.filter(opt =>
+                                        field.value?.includes(opt.value)
+                                    )}
+                                    onChange={(options) =>
+                                        field.onChange(options.map(opt => opt.value))
+                                    }
                                 />
                             )}
                         />
-                        {/* {errors.filters?.[1]?.selectedOptions && (
-                    <p className="text-red-500 text-sm mt-1">
-                        {errors.filters?.[1]?.selectedOptions.message}
-                    </p>
-                )}  */}
                     </div>
                     <label className="font-medium text-sm leading-[160%] text-[rgba(71,85,105,1)]">
                         Unit Type
@@ -212,24 +184,26 @@ export default function FilterForm() {
                                 <div className="flex gap-2">
                                     {unitTypeOptions?.map((item) => (
                                         <Button type="button" key={item.value} onClick={() => {
-                                            const newValues = field.value
-                                            newValues?.push(item.value)
-                                            console.log({ sdd: newValues });
-                                            { field.onChange(newValues) }
-                                        }} className={twMerge(field.value?.includes(item.value) ? "border-blue bg-white" : "bg-white", " border px-11.5 py-4 text-blue text-base font-semibold leading-[150%]")}>{item.label}</Button>
+                                            const newValues = field.value?.includes(item.value)
+                                                ? field.value.filter(v => v !== item.value)
+                                                : [...(field.value || []), item.value]
+                                            field.onChange(newValues)
+                                        }} className={twMerge(field.value?.includes(item.value) ? "border border-blue bg-white" : "bg-white border border-gray-200", "px-12.5 py-4 text-blue text-sm font-semibold leading-[150%]")}>{item.label}</Button>
                                     ))}
                                 </div>
                             )} />
                     </div>
                 </div>
-                <div className="flex gap-4 justify-end">
-                    <DrawerClose asChild>
-                    <Button type="button" onClick={handleReset} className="border border-blue py-3 px-6 rounded-xl text-blue" variant={'destructive'}>Reset</Button>
-                    </DrawerClose>
-                    <DrawerClose asChild>
-                        <Button type="submit" className="py-3 px-6 rounded-xl">Apply</Button>
-                    </DrawerClose>
-                </div>
+                <DrawerFooter className="py-6 px-4">
+                    <div className="flex w-full justify-end gap-4 rounded-b-2xl bg-white fixed z-99 py-6 bottom-1  right-5">
+                        <DrawerClose asChild>
+                            <Button type="button" onClick={handleReset} className="border border-blue py-3 px-6 rounded-xl text-blue" variant={'destructive'}>Reset</Button>
+                        </DrawerClose>
+                        <DrawerClose asChild >
+                            <Button type="submit" className="py-3 px-6 rounded-xl">Apply</Button>
+                        </DrawerClose>
+                    </div>
+                </DrawerFooter>
             </form>
         </div>
     )

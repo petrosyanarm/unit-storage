@@ -1,7 +1,8 @@
 'use client'
 import axios from "axios";
-import { UnitFormValues } from "../utils/shchema/CreateShchema";
+import { UnitFormValues } from "@/src/utils/shchema/CreateShchema";
 import qs from "qs";
+import { DimensionFormValues } from "@/src/utils/shchema/DimensionShchema";
 const API_URL = process.env.NEXT_PUBLIC_URL!;
 const TOKEN = process.env.NEXT_PUBLIC_API_TOKEN!;
 export const api = axios.create({
@@ -20,6 +21,7 @@ api.interceptors.request.use((config) => {
 
 export const getUnits = async (params: {
   page: number;
+  pageSize:number
   facilityIds?: number | undefined;
   name?: string;
   filters?: string[];
@@ -43,13 +45,16 @@ export const getFacilities = async () => {
   })
   return res.data
 }
-export const getDimensions = async () => {
-  const res = await api.get('/unit-dimensions/1')
+export const getDimensions = async (facilityIds:number[]) => {
+  const res = await api.get('/unit-dimensions/1',{
+    params:{facilityIds},
+    paramsSerializer: params => qs.stringify(params, { arrayFormat: "repeat" }),
+  })
   return res.data
 }
 
 export const getPricingGroup = async () => {
-  const res = await api.get('/pricing/1')
+  const res = await api.get('/pricing/1?pageSize=21')
   return res.data
 }
 
@@ -73,7 +78,12 @@ export const deletUnitById = async (unitId: number) => {
   return res.data
 }
 
-// export const getEditUnit=async (unitId:number ,data:UnitFormValues)=>{
-//   const res = await api.patch(`units/1/${unitId}`,data)
-//   return res.data 
-// }
+export const getCreateDimension = async (data: DimensionFormValues) => {
+  const res = await api.post('/unit-dimensions/create/1', data)
+  return res.data
+}
+
+export const updateUnit=async (unitId:number ,data:UnitFormValues)=>{
+  const res = await api.patch(`/units/1/${unitId}`,data)
+  return res.data 
+}

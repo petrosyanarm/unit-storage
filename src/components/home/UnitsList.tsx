@@ -5,10 +5,12 @@ import FIlterModal from "@/src/components/home/FIlterModal";
 import UnitsTable from "@/src/components/home/UnitsTable";
 import { useUnits } from "@/src/utils/hooks/useUnits";
 import { useRouter, useSearchParams } from 'next/navigation'
-import UnitsPaginate from "./UnitsPaginate";
+import UnitsPaginate from "@/src/components/home/UnitsPaginate";
 import Loader from "@/src/components/ui/Loader"
 import { useEffect, useState } from "react";
 import { useDebounce } from "@/src/utils/hooks/Debounse";
+import Search from "@/public/assets/images/Search.svg"
+
 export default function UnitsList() {
     const searchParams = useSearchParams();
     const router = useRouter();
@@ -32,12 +34,9 @@ export default function UnitsList() {
     const units = data?.data
     const totalPages = data?.totalPages || 1;
     const totalUnits = data?.total
-
-    
-    
     return (
         <div className="px-8 py-8">
-            <div className="bg-[rgba(255,255,255,1)] shadow-[0_0_25px_rgba(0,0,0,0.04)] rounded-2xl">
+            <div className="bg-[rgba(255,255,255,1)] shadow-lg shadow-gray-400 rounded-2xl">
                 <div className="px-6 pt-6  ">
                     <div className="border-b border-b-[rgba(225,239,248,1)] flex justify-between">
                         <div className="pl-3 pt-2">
@@ -50,7 +49,7 @@ export default function UnitsList() {
                             <div className="relative">
                                 <input type="text" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search..." className="max-w-65.75 w-full pl-12 py-1.75 border rounded-xl focus:outline-none border-[rgba(226,232,240,1)] placeholder:text-sm font-normal leading-[160%] text-primary" />
                                 <div className="absolute top-3 left-4">
-                                    <Image src={'/assets/images/Search.svg'} width={20} height={20} alt={"Logo"} />
+                                    <Search className="size-5" />
                                 </div>
                             </div>
                             <div>

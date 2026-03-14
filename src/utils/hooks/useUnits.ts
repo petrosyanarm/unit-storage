@@ -1,26 +1,28 @@
-import {getUnits } from "@/src/api/Api";
+import { getUnits } from "@/src/api/Api";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 export const useUnits = () => {
   const searchParams = useSearchParams();
   const getParams = () => {
     const page = Number(searchParams.get("page")) || 1;
+    const pageSize = Number(searchParams.get("pageSize")) || 10;
     const facilityIds =
       searchParams.get("facilityIds") &&
       Number(searchParams.get("facilityIds"));
-    const name =searchParams.get('name') || undefined
-    const filters=searchParams.getAll('filters').map(Number)
-    const minPrice=searchParams.get('minPrice');
-    const maxPrice=searchParams.get('maxPrice');
-    const sizes=searchParams.getAll('sizes').map(Number)
+    const name = searchParams.get("name") || undefined;
+    const filters = searchParams.getAll("filters").map(Number);
+    const minPrice = searchParams.get("minPrice") || undefined;
+    const maxPrice = searchParams.get("maxPrice") || undefined;
+    const sizes = searchParams.getAll("sizes").map(Number);
     return {
       page,
+      pageSize,
       facilityIds: facilityIds ?? undefined,
       name,
-      filters:filters.length ? filters : undefined,
+      filters: filters.length ? filters : undefined,
       minPrice,
       maxPrice,
-      sizes:sizes.length ? sizes : undefined
+      sizes: sizes.length ? sizes : undefined,
     };
   };
 
@@ -29,6 +31,7 @@ export const useUnits = () => {
     queryKey: ["units", keys],
     queryFn: () => {
       const params = getParams();
+      console.log({ params });
       return getUnits(params);
     },
   });

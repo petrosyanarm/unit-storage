@@ -1,7 +1,7 @@
 import Image from "next/image"
-import NavbarList from "./NavbarList"
+import NavbarList from "@/src/components/layout/NavbarList"
 
-const Navbar = () => {
+export default function Navbar  () {
     return (
         <div className="sticky top-0 z-10 bg-white">
             <div className="pl-8 pr-7 py-4 pb-3 flex justify-between border-b border-slate-100 ">
@@ -29,4 +29,3 @@ const Navbar = () => {
     )
 }
 
-export default Navbar
