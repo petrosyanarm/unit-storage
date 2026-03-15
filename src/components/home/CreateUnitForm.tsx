@@ -22,7 +22,6 @@ export default function CreateUnitForm() {
         register,
         handleSubmit,
         control,
-        watch,
         formState: { errors, isValid },
     } = useForm<UnitFormValues>({
         resolver: zodResolver(unitSchema),
@@ -55,21 +54,21 @@ export default function CreateUnitForm() {
     }))
     const { data } = useUnits();
     const units = data?.facilityList
-    const facilityOptions = units?.map(item => ({
+    const facilityOptions = units?.map((item:{id:number;name:string}) => ({
         value: item.id,
         label: item.name,
     }));
     const { data: pricingGroup } = usePricingGroup()
-    const pricingGroupOptions = pricingGroup?.data.map(item => ({
+    const pricingGroupOptions = pricingGroup?.data.map((item:{id:number;name:string}) => ({
         value: item.id,
         label: item.name,
     }));
     console.log({ pricingGroupOptions })
-    const unitTypeOptions = data?.filterList?.[1]?.filterOptions?.map(item => ({
+    const unitTypeOptions = data?.filterList?.[1]?.filterOptions?.map((item:{id:number;name:string}) => ({
         value: item.id,
         label: item.name
     }));
-    const featuresOptions = data?.filterList?.[0]?.filterOptions?.map(item => ({
+    const featuresOptions = data?.filterList?.[0]?.filterOptions?.map((item:{id:number;name:string}) => ({
         value: item.id,
         label: item.name
     }));

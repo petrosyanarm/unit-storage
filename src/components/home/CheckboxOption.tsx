@@ -5,6 +5,7 @@ export default function CheckboxOption(props: any){
            <div className="flex items-center gap-2">
         <input
           type="checkbox"
+          readOnly
           checked={props.isSelected}
           className="w-4 h-4"
         />

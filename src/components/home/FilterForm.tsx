@@ -19,17 +19,17 @@ export default function FilterForm() {
     const router = useRouter();
     const pathname = usePathname()
     const { data: unitSizes } = useUnitSizes();
-    const unitSizesOptions = unitSizes?.data?.map(item => ({
+    const unitSizesOptions = unitSizes?.data?.map((item:{id:number;name:string}) => ({
         value: item.id,
         label: item.name
     }))
     const { data: features } = useUnits()
     const { minPriceQuery, maxPriceQuery, sizes, filters } = useFilterParams();
-    const featuresOptions = features?.filterList?.[0]?.filterOptions?.map(item => ({
+    const featuresOptions = features?.filterList?.[0]?.filterOptions?.map((item:{id:number;name:string}) => ({
         value: item.id,
         label: item.name
     }));
-    const unitTypeOptions = features?.filterList?.[1]?.filterOptions?.map(item => ({
+    const unitTypeOptions = features?.filterList?.[1]?.filterOptions?.map((item:{id:number;name:string}) => ({
         value: item.id,
         label: item.name
     }));

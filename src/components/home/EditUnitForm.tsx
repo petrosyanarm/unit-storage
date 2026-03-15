@@ -24,22 +24,22 @@ export default function EditUnitForm({ unitId }: Props) {
     console.log({ selectedOptions });
     const { data } = useUnits();
     const units = data?.facilityList
-    const facilityOptions = units?.map(item => ({
+    const facilityOptions = units?.map((item:{id:number;name:string}) => ({
         value: item.id,
         label: item.name,
     }));
     const { data: pricingGroup } = usePricingGroup()
-    const pricingGroupOptions = pricingGroup?.data.map(item => ({
+    const pricingGroupOptions = pricingGroup?.data.map((item:{id:number;name:string}) => ({
         value: item.id,
         label: item.name,
     }));
     console.log({ pricingGroupOptions })
-    const unitTypeOptions = data?.filterList?.[1]?.filterOptions?.map(item => ({
+    const unitTypeOptions = data?.filterList?.[1]?.filterOptions?.map((item:{id:number;name:string})=> ({
         value: item.id,
         label: item.name
     }));
     console.log({ unitTypeOptions })
-    const featuresOptions = data?.filterList?.[0]?.filterOptions?.map(item => ({
+    const featuresOptions = data?.filterList?.[0]?.filterOptions?.map((item:{id:number;name:string}) => ({
         value: item.id,
         label: item.name
     }));
@@ -69,7 +69,7 @@ export default function EditUnitForm({ unitId }: Props) {
             filters: [
                 {
                     filterId: 1,
-                    selectedOptions: unit ? unit[0]?.filters?.[0]?.selectedOptions?.map(item => item.id) : []
+                    selectedOptions: unit ? unit[0]?.filters?.[0]?.selectedOptions?.map((item:{id:number}) => item.id) : []
                 },
                 {
                     filterId: 2,
