@@ -15,31 +15,29 @@ import { useUnit } from '@/src/utils/hooks/useUnit';
 import { selectClassNames } from '@/src/components/ui/selectClassNames';
 import { useFacilityStore } from '@/src/store/useFacilityStore';
 import LoadingForm from '@/src/components/ui/LoadingForm';
+import { Dimension, Option } from '@/src/table/Types';
+
 type Props = {
     unitId: number
 }
 export default function EditUnitForm({ unitId }: Props) {
     const { data: unit, isLoading } = useUnit(unitId);
-    const selectedOptions = unit ? unit[0]?.filters?.[0]?.selectedOptions[0].id : [];
-    console.log({ selectedOptions });
     const { data } = useUnits();
     const units = data?.facilityList
-    const facilityOptions = units?.map((item:{id:number;name:string}) => ({
+    const facilityOptions = units?.map((item: { id: number; name: string }) => ({
         value: item.id,
         label: item.name,
     }));
     const { data: pricingGroup } = usePricingGroup()
-    const pricingGroupOptions = pricingGroup?.data.map((item:{id:number;name:string}) => ({
+    const pricingGroupOptions = pricingGroup?.data.map((item: { id: number; name: string }) => ({
         value: item.id,
         label: item.name,
     }));
-    console.log({ pricingGroupOptions })
-    const unitTypeOptions = data?.filterList?.[1]?.filterOptions?.map((item:{id:number;name:string})=> ({
+    const unitTypeOptions = data?.filterList?.[1]?.filterOptions?.map((item: { id: number; name: string }) => ({
         value: item.id,
         label: item.name
     }));
-    console.log({ unitTypeOptions })
-    const featuresOptions = data?.filterList?.[0]?.filterOptions?.map((item:{id:number;name:string}) => ({
+    const featuresOptions = data?.filterList?.[0]?.filterOptions?.map((item: { id: number; name: string }) => ({
         value: item.id,
         label: item.name
     }));
@@ -69,7 +67,7 @@ export default function EditUnitForm({ unitId }: Props) {
             filters: [
                 {
                     filterId: 1,
-                    selectedOptions: unit ? unit[0]?.filters?.[0]?.selectedOptions?.map((item:{id:number}) => item.id) : []
+                    selectedOptions: unit ? unit[0]?.filters?.[0]?.selectedOptions?.map((item: { id: number }) => item.id) : []
                 },
                 {
                     filterId: 2,
@@ -81,11 +79,10 @@ export default function EditUnitForm({ unitId }: Props) {
     const facilityId = useFacilityStore((state) => state.facilityId);
     const facilityIds = facilityId ? [facilityId] : []
     const { data: dimensions } = useDimensions(facilityIds);
-    const dimensionsOptions = dimensions?.data.map(item => ({
+    const dimensionsOptions = dimensions?.data.map((item: Dimension) => ({
         value: item.id,
         label: `${item.x}x${item.y}x${item.z}`
     }))
-    console.log({ unit, a: unit ? unit[0]?.unitDimensionsId : 0 })
 
     return (
         <form className="pt-4 space-y-4 max-h-[calc(100vh-123px)]">
@@ -160,7 +157,7 @@ export default function EditUnitForm({ unitId }: Props) {
                                 name={`filters.0.selectedOptions`}
                                 control={control}
                                 render={({ field }) => {
-                                    const selected = featuresOptions.filter(opt => field.value?.includes(opt.value));
+                                    const selected: Option[] = featuresOptions.filter((opt: Option[]) => field.value?.includes(opt.value));
                                     return (
                                         <Select
                                             options={featuresOptions}

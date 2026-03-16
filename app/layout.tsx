@@ -28,7 +28,7 @@ export default function RootLayout({
         <QueryProvider>
           <Toaster position="top-right" reverseOrder={true} />
           <Sidebar />
-          <div className="ml-[249px] overflow-y-auto h-screen">
+          <div className="ml-[249px] overflow-y-auto overflow-x-hidden h-screen">
             <Navbar />
             {children}
           </div>

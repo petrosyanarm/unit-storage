@@ -19,7 +19,7 @@ export default function Loader() {
                     <tr className="hover:bg-gray-50">
                         <td className="px-6 py-4 whitespace-nowrap">
                             <div className="flex items-center">
-                                <div className="flex-shrink-0 size-10 bg-gray-200 rounded-full"></div>
+                                <div className="shrink-0 size-10 bg-gray-200 rounded-full"></div>
                                 <div className="ml-4">
                                     <div className="h-4 bg-gray-200 rounded w-48"></div>
                                     <div className="mt-2 h-4 bg-gray-200 rounded w-32"></div>

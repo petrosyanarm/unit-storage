@@ -15,7 +15,8 @@ import { useCreateUnit } from '@/src/utils/hooks/useCreateUnit';
 import CreateDimensionList from '@/src/components/home/CreateDimensionLIst';
 import { selectClassNames } from '@/src/components/ui/selectClassNames';
 import { useFacilityStore } from '@/src/store/useFacilityStore';
-import CheckboxOption from './CheckboxOption';
+import { Dimension } from '@/src/table/Types';
+import { VariantProps } from '@/src/table/Types';
 
 export default function CreateUnitForm() {
     const {
@@ -43,36 +44,31 @@ export default function CreateUnitForm() {
     };
 
     const facilityId = useFacilityStore((state) => state.facilityId);
-    const setFacilityId = useFacilityStore((state) => state.setFacilityId);
-    console.log({ facilityId, setFacilityId })
     const facilityIds = facilityId ? [facilityId] : [];
-    console.log({ facilityIds })
     const { data: dimensions, isLoading: isLoadingDimensions } = useDimensions(facilityIds);
-    const dimensionsOptions = dimensions?.data.map(item => ({
+    const dimensionsOptions = dimensions?.data.map((item:Dimension) => ({
         value: item.id,
         label: `${item.x}x${item.y}x${item.z}`
     }))
     const { data } = useUnits();
     const units = data?.facilityList
-    const facilityOptions = units?.map((item:{id:number;name:string}) => ({
+    const facilityOptions = units?.map((item:VariantProps) => ({
         value: item.id,
         label: item.name,
     }));
     const { data: pricingGroup } = usePricingGroup()
-    const pricingGroupOptions = pricingGroup?.data.map((item:{id:number;name:string}) => ({
+    const pricingGroupOptions = pricingGroup?.data.map((item:VariantProps) => ({
         value: item.id,
         label: item.name,
     }));
-    console.log({ pricingGroupOptions })
-    const unitTypeOptions = data?.filterList?.[1]?.filterOptions?.map((item:{id:number;name:string}) => ({
+    const unitTypeOptions = data?.filterList?.[1]?.filterOptions?.map((item:VariantProps) => ({
         value: item.id,
         label: item.name
     }));
-    const featuresOptions = data?.filterList?.[0]?.filterOptions?.map((item:{id:number;name:string}) => ({
+    const featuresOptions = data?.filterList?.[0]?.filterOptions?.map((item:VariantProps) => ({
         value: item.id,
         label: item.name
     }));
-    console.log({ errors });
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="pt-4 space-y-4  max-h-[calc(100vh-123px)]">
@@ -100,7 +96,6 @@ export default function CreateUnitForm() {
                     />
                 </div>
                 <div>
-                    {/* {isLoading ? */}
                     <FormSelect
                         name="unitDimensionsId"
                         control={control}

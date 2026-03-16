@@ -16,7 +16,10 @@ export default function UnitsPaginate({ totalPages }: { totalPages: number }) {
   const pathname = usePathname()
   const page = Number(searchParams.get('page')) || 1
   const handlePageChange = ({ selected }: { selected: number }) => {
-    router.push(`?page=${selected + 1}`)
+    const params = new URLSearchParams(searchParams.toString());
+    console.log({ params })
+    params.set('page', (selected + 1).toString());
+    router.replace(`?${params.toString()}`);
   }
   const pageSizeQuery = Number(searchParams.get('pageSize')) || 10
   console.log({ pageSizeQuery })
@@ -42,7 +45,7 @@ export default function UnitsPaginate({ totalPages }: { totalPages: number }) {
           menuPlacement="top"
           value={pageSizeOptions.find(opt => opt.value === pageSize)}
           onChange={(option) => {
-            setValue("pageSize", option?.value)
+            setValue("pageSize", option?.value ?? 0)
             const params = new URLSearchParams(searchParams.toString());
             params.set("pageSize", String(option?.value));
             router.replace(`${pathname}?${params.toString()}`);

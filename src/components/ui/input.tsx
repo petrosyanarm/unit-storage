@@ -1,6 +1,4 @@
-// import * as React from "react"
 import { FieldError } from "react-hook-form";
-
 import { cn } from "@/src/lib/utils"
 type FormInputProps =  {
   label: string;

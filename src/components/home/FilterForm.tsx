@@ -15,21 +15,22 @@ import useFilterParams from "@/src/utils/hooks/useFilterParams";
 import { selectClassNames } from "@/src/components/ui/selectClassNames";
 import Price from '@/public/assets/images/price.svg'
 import CheckboxOption from "./CheckboxOption";
+import { Option, VariantProps } from "@/src/table/Types";
 export default function FilterForm() {
     const router = useRouter();
     const pathname = usePathname()
     const { data: unitSizes } = useUnitSizes();
-    const unitSizesOptions = unitSizes?.data?.map((item:{id:number;name:string}) => ({
+    const unitSizesOptions = unitSizes?.data?.map((item: VariantProps) => ({
         value: item.id,
         label: item.name
     }))
     const { data: features } = useUnits()
     const { minPriceQuery, maxPriceQuery, sizes, filters } = useFilterParams();
-    const featuresOptions = features?.filterList?.[0]?.filterOptions?.map((item:{id:number;name:string}) => ({
+    const featuresOptions = features?.filterList?.[0]?.filterOptions?.map((item: VariantProps) => ({
         value: item.id,
         label: item.name
     }));
-    const unitTypeOptions = features?.filterList?.[1]?.filterOptions?.map((item:{id:number;name:string}) => ({
+    const unitTypeOptions = features?.filterList?.[1]?.filterOptions?.map((item: VariantProps) => ({
         value: item.id,
         label: item.name
     }));
@@ -71,7 +72,6 @@ export default function FilterForm() {
     }
     const minPrice = watch("minPrice");
     const maxPrice = watch("maxPrice");
-    console.log({ errors });
 
     return (
         <div className="max-h-[calc(100vh-168px)]">
@@ -81,7 +81,7 @@ export default function FilterForm() {
                         Unit Price Range
                     </label>
                     <Slider
-                        value={[minPrice, maxPrice]}
+                        value={[minPrice, maxPrice] as [number, number]}
                         onValueChange={(value) => {
                             setValue("minPrice", value[0]);
                             setValue("maxPrice", value[1]);
@@ -165,7 +165,7 @@ export default function FilterForm() {
                                     components={{ Option: CheckboxOption }}
                                     closeMenuOnSelect={false}
                                     hideSelectedOptions={false}
-                                    value={featuresOptions?.filter(opt =>
+                                    value={featuresOptions?.filter((opt: Option[]) =>
                                         field.value?.includes(opt.value)
                                     )}
                                     onChange={(options) =>

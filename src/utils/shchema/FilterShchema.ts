@@ -12,9 +12,8 @@ export const filterShchema = z.object({
 
   unitSizesOptions: z.array(z.number()).optional(),
 
-  unitTypeId:  z.array(z.number()).optional(),
+  unitTypeId: z.array(z.number()).optional(),
 
-  featuresOptions: z.array(z.number()).optional()
+  featuresOptions: z.array(z.number()).optional(),
 });
 export type FilterFormValues = z.infer<typeof filterShchema>;
-

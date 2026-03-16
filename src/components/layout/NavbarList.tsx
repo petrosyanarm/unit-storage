@@ -11,8 +11,7 @@ export default function NavbarList() {
   const router = useRouter()
   const pathname = usePathname();
   const activeFilter = Number(searchParams.get('facilityIds')) || null;
-  const { data, isLoading } = useFacilities();
-  const units = data
+  const { data:units, isLoading } = useFacilities();
   const sortedUnits = units?.data.sort((a, b) => a.id - b.id);
   console.log({ units })
   const handleClick = (id: number | null) => {

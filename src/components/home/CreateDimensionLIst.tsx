@@ -1,7 +1,8 @@
-import { components } from "react-select";
+import { components,MenuListProps } from "react-select";
 import { Button } from "@/src/components/ui/button";
 import { useDrawerStore } from "@/src/store/useDrawerStore";
-export default function CreateDimensionList(props) {
+import { Option } from "@/src/table/Types";
+export default function CreateDimensionList(props: MenuListProps<Option, false>) {
   const { setOpenDimension } = useDrawerStore()
   return (
     <components.MenuList {...props}>

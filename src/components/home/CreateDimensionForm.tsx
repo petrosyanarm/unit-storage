@@ -17,7 +17,6 @@ export default function CreateDimensionForm() {
         resolver: zodResolver(dimensionShchema)
     });
     const {facilityId} = useFacilityStore()
-    console.log({facilityId})
     const { mutate } = useCreateDimension()
     const onSubmit = async (data: DimensionFormValues) => {
         if(!facilityId) return

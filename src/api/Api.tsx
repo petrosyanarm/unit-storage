@@ -22,7 +22,7 @@ api.interceptors.request.use((config) => {
 
 export const getUnits = async (params: {
   page: number;
-  pageSize:number
+  pageSize: number
   facilityIds?: number | undefined;
   name?: string;
   filters?: string[];
@@ -39,16 +39,16 @@ export const getUnits = async (params: {
 };
 
 export const getFacilities = async () => {
-  const res = await api.get('/facilities/1',{
-    params:{
-      pageSize:20
+  const res = await api.get('/facilities/1', {
+    params: {
+      pageSize: 20
     }
   })
   return res.data
 }
-export const getDimensions = async (facilityIds:number[]) => {
-  const res = await api.get('/unit-dimensions/1',{
-    params:{facilityIds},
+export const getDimensions = async (facilityIds: number[]) => {
+  const res = await api.get('/unit-dimensions/1', {
+    params: { facilityIds },
     paramsSerializer: params => qs.stringify(params, { arrayFormat: "repeat" }),
   })
   return res.data
@@ -84,7 +84,7 @@ export const getCreateDimension = async (data: DimensionFormValues) => {
   return res.data
 }
 
-export const updateUnit=async (unitId:number ,data:UnitFormValues)=>{
-  const res = await api.patch(`/units/1/${unitId}`,data)
-  return res.data 
+export const updateUnit = async (unitId: number, data: UnitFormValues) => {
+  const res = await api.patch(`/units/1/${unitId}`, data)
+  return res.data
 }

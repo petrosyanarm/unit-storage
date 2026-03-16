@@ -11,7 +11,7 @@ export default function SidebarMenu() {
     const [openDropdown, setOpendropdown] = useState<number | null>(null);
     const [activeOption, setActiveOption] = useState<number | null>(null)
     return (
-        <div className='flex flex-col gap-68'>
+        <div className='flex flex-col h-[calc(100vh-90px)] justify-between'>
             <ul className='px-3.5 pt-10 flex flex-col gap-3 border-r border-slate-100'>
                 {NAVBAR_LINKS.map((item) => (
                     <li key={item.id} className='px-3 py-3 '>

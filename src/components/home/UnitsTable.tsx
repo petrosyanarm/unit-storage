@@ -1,6 +1,6 @@
 'use client';
 
-import {useReactTable,getCoreRowModel,flexRender,} from '@tanstack/react-table';
+import { useReactTable, getCoreRowModel, flexRender, } from '@tanstack/react-table';
 import { columns } from '@/src/table/Columns';
 import { Unit } from '@/src/table/Types';
 import { useDeleteUnit } from '@/src/utils/hooks/useDeleteUnit';
@@ -22,7 +22,7 @@ export default function UnitsTable({ data = [] }: Props) {
 
   return (
     <div className="">
-      <table className="w-full min-h-[calc(100vh-210px)]">
+      <table className="w-full block overflow-x-auto min-h-[calc(100vh-400px)]">
         <thead className="h-16">
           {table.getHeaderGroups().map(headerGroup => (
             <tr key={headerGroup.id} className=''>
@@ -47,7 +47,7 @@ export default function UnitsTable({ data = [] }: Props) {
               className="h-22.5 border-b hover:bg-blue-100 transition"
             >
               {row.getVisibleCells().map(cell => (
-                <td key={cell.id} className="h-22.5 px-4 py-4 text-base font-medium leading-[150%] text-primary">
+                <td key={cell.id} className="max-h-22.5 px-4 py-4 text-base font-medium leading-[150%] text-primary">
                   {flexRender(
                     cell.column.columnDef.cell,
                     cell.getContext()

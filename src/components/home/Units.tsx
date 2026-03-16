@@ -1,4 +1,3 @@
-"use client"
 import Search from "@/public/assets/images/Search.svg"
 import NotificationIcon from "@/public/assets/images/notificationIcon.svg"
 

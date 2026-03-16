@@ -1,8 +1,9 @@
-import  { components } from "react-select";
-export default function CheckboxOption(props: any){
-    return (
-        <components.Option {...props}>
-           <div className="flex items-center gap-2">
+import { Option } from "@/src/table/Types";
+import { components,OptionProps } from "react-select";
+export default function CheckboxOption(props: OptionProps<Option, true>) {
+  return (
+    <components.Option {...props}>
+      <div className="flex items-center gap-2">
         <input
           type="checkbox"
           readOnly
@@ -11,6 +12,6 @@ export default function CheckboxOption(props: any){
         />
         <span>{props.label}</span>
       </div>
-        </components.Option>
-    );
+    </components.Option>
+  );
 };

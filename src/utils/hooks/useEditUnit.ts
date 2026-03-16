@@ -1,10 +1,10 @@
 import { updateUnit } from "@/src/api/Api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { UnitFormValues } from "@/src/utils/shchema/CreateShchema";
-interface EditUnitParams {
+type EditUnitParams = {
   unitId: number;
   data: UnitFormValues;
-}
+};
 export const useEditUnit = () => {
   const queryClient = useQueryClient();
   return useMutation({

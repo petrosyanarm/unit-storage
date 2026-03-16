@@ -12,7 +12,6 @@ export default function DrawerScrollableContent() {
         (maxPriceQuery && maxPriceQuery !== defaultMaxPrice ? 1 : 0) +
         (sizes?.length || 0) +
         (filters?.length || 0);
-    console.log({ filterCount });
     return (
         <Drawer direction="right" handleOnly>
             <DrawerTrigger asChild>

@@ -57,8 +57,17 @@ export default function UnitsList() {
                             </div>
                         </div>
                     </div>
-                    <UnitsTable data={units} />
-                    {isLoading ? <Loader /> :
+                    <div className="flex flex-col  min-h-[calc(100vh-310px)] ">
+                        {units?.length > 0 && (
+                            <div className="w-full">
+                                <UnitsTable data={units} />
+                            </div>
+                        )}
+                        {isLoading && (
+                            <div className="w-full h-full mt-10">
+                                <Loader />
+                            </div>
+                        )}
                         <div>
                             {totalUnits === 0 &&
                                 <div className="px-5 py-20 flex justify-center items-center">
@@ -68,7 +77,7 @@ export default function UnitsList() {
                             {showPagination &&
                                 <UnitsPaginate totalPages={totalPages} />}
                         </div>
-                    }
+                    </div>
                 </div>
             </div>
         </div>
