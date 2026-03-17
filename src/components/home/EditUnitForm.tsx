@@ -15,7 +15,7 @@ import { useUnit } from '@/src/utils/hooks/useUnit';
 import { selectClassNames } from '@/src/components/ui/selectClassNames';
 import { useFacilityStore } from '@/src/store/useFacilityStore';
 import LoadingForm from '@/src/components/ui/LoadingForm';
-import { Dimension, DimensionOptions, Option, Val } from '@/src/table/Types';
+import { DimensionOptions, Option, Val } from '@/src/table/Types';
 
 type Props = {
     unitId: number

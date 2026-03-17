@@ -22,7 +22,7 @@ export type VariantProps = {
 };
 
 export type Option = {
-  value: number | string;
+  value: number | null;
   label: string;
   name: string;
 };
@@ -44,3 +44,7 @@ export type DimensionOptions = {
   y: number;
   z: number;
 };
+
+export type Va={
+  value:number | null
+}

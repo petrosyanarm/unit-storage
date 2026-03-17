@@ -1,7 +1,7 @@
 'use client';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import Select from 'react-select'
+import Select, {  SingleValue } from 'react-select'
 import { unitSchema, UnitFormValues } from '@/src/utils/shchema/CreateShchema';
 import { Input } from '@/src/components/ui/input';
 import { useUnits } from '@/src/utils/hooks/useUnits';
@@ -15,7 +15,7 @@ import { useCreateUnit } from '@/src/utils/hooks/useCreateUnit';
 import CreateDimensionList from '@/src/components/home/CreateDimensionLIst';
 import { selectClassNames } from '@/src/components/ui/selectClassNames';
 import { useFacilityStore } from '@/src/store/useFacilityStore';
-import { Dimension, DimensionOptions } from '@/src/table/Types';
+import { DimensionOptions, Option } from '@/src/table/Types';
 import { VariantProps } from '@/src/table/Types';
 
 export default function CreateUnitForm() {
@@ -46,7 +46,7 @@ export default function CreateUnitForm() {
     const facilityId = useFacilityStore((state) => state.facilityId);
     const facilityIds = facilityId ? [facilityId] : [];
     const { data: dimensions, isLoading: isLoadingDimensions } = useDimensions(facilityIds);
-    const dimensionsOptions = dimensions?.data.map((item:DimensionOptions) => ({
+    const dimensionsOptions = dimensions?.data.map((item: DimensionOptions) => ({
         value: item.id,
         label: `${item.x}x${item.y}x${item.z}`
     }))
@@ -126,7 +126,7 @@ export default function CreateUnitForm() {
                     <label className="font-medium text-sm leading-[160%] text-[rgba(71,85,105,1)]">
                         Unit Types <span className="text-[rgba(237,79,157,1)]">*</span>
                     </label>
-                      <Controller name="filters.1.selectedOptions" control={control}
+                    <Controller name="filters.1.selectedOptions" control={control}
                         render={({ field }) => (
                             <Select
                                 options={unitTypeOptions}
@@ -135,9 +135,12 @@ export default function CreateUnitForm() {
                                 isClearable={false}
                                 closeMenuOnSelect={false}
                                 hideSelectedOptions={false}
-                                onChange={(option:{value:number | null; label:string | null}) => {
-                                    field.onChange([option.value]);
-                                    console.log({option})
+                                onChange={(option: SingleValue<Option>) => {
+                                    if (option) {
+                                        field.onChange([option.value])
+                                    } else {
+                                        field.onChange([]); 
+                                    }
                                 }}
                             />
                         )}
@@ -157,7 +160,7 @@ export default function CreateUnitForm() {
                                 isClearable={false}
                                 closeMenuOnSelect={false}
                                 hideSelectedOptions={false}
-                                value={featuresOptions?.find((option:{value:number[]}) => option.value === field.value)}
+                                value={featuresOptions?.find((option: { value: number[] }) => option.value === field.value)}
                                 onChange={option => {
                                     console.log({ option });
                                     const values = option.map(({ value }) => value)

@@ -1,24 +1,24 @@
 import { useFacilityStore } from "@/src/store/useFacilityStore";
 import { Option } from "@/src/table/Types";
-import { FieldValues,Controller, Control, FieldError } from "react-hook-form";
-import Select, { ClassNamesConfig,ComponentsConfig, GroupBase } from "react-select";
+import { FieldValues,Controller, Control, FieldError,Path } from "react-hook-form";
+import Select from "react-select";
 
 type FormSelectProps<T extends FieldValues,OptionType=Option> = {
-    name: keyof T;
+    name: Path<T>;
     label: string;
     required: boolean;
     control: Control<T>;
     options?: Option[];
-    classNames?: ClassNamesConfig<Option, boolean>;
+    classNames?: React.ComponentProps<typeof Select>['classNames'];
     placeholder: string;
     error?: FieldError | undefined;
     multi?: boolean;
     isLoading?:boolean,
     isDisabled?:boolean
     onFacilityChange?: (value: number | null) => void;
-    components?:ComponentsConfig<OptionType, boolean, GroupBase<OptionType>>
+    components?: React.ComponentProps<typeof Select>['components'];
 }
-export default function FormSelect({ name, label, required, control, options, classNames, placeholder, error, multi, onFacilityChange,isLoading,isDisabled, components }: FormSelectProps<T>) {
+export default function FormSelect<T extends FieldValues>({ name, label, required, control, options, classNames, placeholder, error, multi, onFacilityChange,isLoading,isDisabled, components }: FormSelectProps<T>) {
     const setFacilityId = useFacilityStore((state) => state.setFacilityId);
     return (
         <div>
