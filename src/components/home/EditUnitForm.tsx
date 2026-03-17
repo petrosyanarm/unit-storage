@@ -1,5 +1,5 @@
 'use client';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm, Controller, FieldError } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Select from 'react-select'
 import { unitSchema, UnitFormValues } from '@/src/utils/shchema/CreateShchema';
@@ -15,7 +15,7 @@ import { useUnit } from '@/src/utils/hooks/useUnit';
 import { selectClassNames } from '@/src/components/ui/selectClassNames';
 import { useFacilityStore } from '@/src/store/useFacilityStore';
 import LoadingForm from '@/src/components/ui/LoadingForm';
-import { Dimension, Option } from '@/src/table/Types';
+import { Dimension, DimensionOptions, Option, Val } from '@/src/table/Types';
 
 type Props = {
     unitId: number
@@ -63,7 +63,6 @@ export default function EditUnitForm({ unitId }: Props) {
             rentable: unit ? unit[0]?.rentable : true,
             width: unit ? unit[0]?.doorWidth : 0,
             height: unit ? unit[0]?.doorHeight : 0,
-            rentableReason: unit ? unit?.rentableReason : "Available for leasing",
             filters: [
                 {
                     filterId: 1,
@@ -79,7 +78,7 @@ export default function EditUnitForm({ unitId }: Props) {
     const facilityId = useFacilityStore((state) => state.facilityId);
     const facilityIds = facilityId ? [facilityId] : []
     const { data: dimensions } = useDimensions(facilityIds);
-    const dimensionsOptions = dimensions?.data.map((item: Dimension) => ({
+    const dimensionsOptions = dimensions?.data.map((item: DimensionOptions) => ({
         value: item.id,
         label: `${item.x}x${item.y}x${item.z}`
     }))
@@ -144,7 +143,7 @@ export default function EditUnitForm({ unitId }: Props) {
                                 label="Unit Type"
                                 options={unitTypeOptions}
                                 placeholder="Select Unit Type"
-                                error={errors.filters?.[1]?.selectedOptions}
+                                error={errors.filters?.[1]?.selectedOptions as FieldError}
                                 required
                                 classNames={selectClassNames}
                             />
@@ -157,7 +156,7 @@ export default function EditUnitForm({ unitId }: Props) {
                                 name={`filters.0.selectedOptions`}
                                 control={control}
                                 render={({ field }) => {
-                                    const selected: Option[] = featuresOptions.filter((opt: Option[]) => field.value?.includes(opt.value));
+                                    const selected: Option[] = featuresOptions.filter((opt: Val) => field.value?.includes(opt.value));
                                     return (
                                         <Select
                                             options={featuresOptions}

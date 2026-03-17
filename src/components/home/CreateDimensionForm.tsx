@@ -14,7 +14,7 @@ export default function CreateDimensionForm() {
         handleSubmit,
         formState: { errors, isValid },
     } = useForm<DimensionFormValues>({
-        resolver: zodResolver(dimensionShchema)
+        resolver: zodResolver(dimensionShchema) 
     });
     const {facilityId} = useFacilityStore()
     const { mutate } = useCreateDimension()
@@ -24,6 +24,7 @@ export default function CreateDimensionForm() {
             ...data,
             facilityIds:facilityId ? [facilityId] : []
         });
+        console.log(errors)
     };
     return (
         <div className="h-[89vh] pt-5 px-5 ml-4 bg-[rgba(248,250,252,1)] rounded-2xl shadow-[0px_4px_12px_rgba(0,0,0,0.12)]">
@@ -41,7 +42,7 @@ export default function CreateDimensionForm() {
                         label='Length (X)'
                         required
                         type='number'
-                        {...register('x')}
+                        {...register('x',{ valueAsNumber: true })}
                         placeholder="Enter length..."
                         className="mt-2 bg-white appearance-none! [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-moz-appearance]:textfield"
                         error={errors.x}
@@ -55,7 +56,7 @@ export default function CreateDimensionForm() {
                         label='Width (Y)'
                         required
                         type='number'
-                        {...register('y')}
+                        {...register('y',{ valueAsNumber: true })}
                         placeholder="Enter width..."
                         className="mt-2 bg-white appearance-none! [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-moz-appearance]:textfield"
                         error={errors.y}
@@ -69,7 +70,7 @@ export default function CreateDimensionForm() {
                         label='Height (Z)'
                         required
                         type='number'
-                        {...register('z')}
+                        {...register('z',{ valueAsNumber: true })}
                         placeholder="Enter height..."
                         className="mt-2 bg-white appearance-none! [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-moz-appearance]:textfield"
                         error={errors.z}

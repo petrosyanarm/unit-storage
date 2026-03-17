@@ -6,20 +6,18 @@ export const useUnits = () => {
   const getParams = () => {
     const page = Number(searchParams.get("page")) || 1;
     const pageSize = Number(searchParams.get("pageSize")) || 10;
-    const facilityIds =
-      searchParams.get("facilityIds") &&
-      Number(searchParams.get("facilityIds"));
+    const facilityIds = Number(searchParams.get("facilityIds")) || undefined;
     const name = searchParams.get("name") || undefined;
-    const filters = searchParams.getAll("filters").map(Number);
-    const minPrice = searchParams.get("minPrice") || undefined;
-    const maxPrice = searchParams.get("maxPrice") || undefined;
+    const filters = searchParams.getAll("filters").map(String);
+    const minPrice = Number(searchParams.get("minPrice")) || undefined;
+    const maxPrice = Number(searchParams.get("maxPrice")) || undefined;
     const sizes = searchParams.getAll("sizes").map(Number);
     return {
       page,
       pageSize,
       facilityIds: facilityIds ?? undefined,
       name,
-      filters: filters.length ? filters : undefined,
+      filters:filters.length ? filters : undefined,
       minPrice,
       maxPrice,
       sizes: sizes.length ? sizes : undefined,

@@ -3,35 +3,33 @@ import { z } from "zod";
 export const unitSchema = z.object({
   name: z.string().min(1, "Unit name is required"),
 
-  facilityId: z.coerce.number().min(1, "Facility is required"),
+  facilityId: z.number().min(1, "Facility is required"),
 
-  unitDimensionsId: z.coerce.number().min(1, "Dimension is required"),
+  unitDimensionsId: z.number().min(1, "Dimension is required"),
 
-  pricingGroupId: z.coerce.number().min(1, "Pricing group is required"),
+  pricingGroupId: z.number().min(1, "Pricing group is required"),
 
-  rentable: z.coerce.boolean(),
+  rentable: z.boolean(),
 
-  rentableReason: z.string().optional().default(""),
+  width: z.number().min(1, "Width is required"),
 
-  width: z.coerce.number().min(1, "Width is required"),
+  height: z.number().min(1, "Height is required"),
 
-  height: z.coerce.number().min(1, "Height is required"),
-
-  filters: z
-    .array(
-      z.object({
-        filterId: z.coerce.number(),
-        selectedOptions: z
-          .union([
-            z.coerce.number().transform((val) => [val]),
-            z.array(z.number()),
-          ])
-          .refine((arr) => arr.length > 0, {
-            message: "At least one option must be selected",
-          }),
-      }),
-    )
-    .min(1, "At least one filter is required"),
+  filters: z.tuple([
+    z.object({
+      filterId: z.number(),
+      selectedOptions: z
+        .array(z.number())
+        .min(1, "At least one option must be selected"),
+    }),
+    z.object({
+      filterId: z.number(),
+       selectedOptions: z
+        .array(z.number())
+        .min(1, "At least one option must be selected"),
+    }),
+  ]),
 });
 
 export type UnitFormValues = z.infer<typeof unitSchema>;
+

@@ -22,19 +22,16 @@ export default function UnitsPaginate({ totalPages }: { totalPages: number }) {
     router.replace(`?${params.toString()}`);
   }
   const pageSizeQuery = Number(searchParams.get('pageSize')) || 10
-  console.log({ pageSizeQuery })
   const pageSizeOptions = [
     { value: 10, label: "10" },
     { value: 20, label: "20" },
     { value: 30, label: "30" },
   ]
-  console.log({})
-  const { setValue, watch } = useForm({
+  const { setValue } = useForm({
     defaultValues: {
       pageSize: pageSizeQuery
     }
   })
-  const pageSize = watch('pageSize')
   return (
     <div className="flex justify-between items-center pb-10">
       <div className="flex justify-center items-center gap-2 mt-9">
@@ -43,13 +40,14 @@ export default function UnitsPaginate({ totalPages }: { totalPages: number }) {
           options={pageSizeOptions}
           classNames={selectPageClassNames}
           menuPlacement="top"
-          value={pageSizeOptions.find(opt => opt.value === pageSize)}
+          value={pageSizeOptions.find(opt => opt.value === pageSizeQuery)}
           onChange={(option) => {
             setValue("pageSize", option?.value ?? 0)
             const params = new URLSearchParams(searchParams.toString());
             params.set("pageSize", String(option?.value));
             router.replace(`${pathname}?${params.toString()}`);
           }}
+          instanceId="pageSize" 
         />
       </div>
       {totalPages > 1 && (

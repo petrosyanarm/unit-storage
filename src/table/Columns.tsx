@@ -27,7 +27,7 @@ export const columns = (handleDelete: (unitId: number) => void): ColumnDef<Unit>
     header: 'Features',
     cell: ({ getValue }) => (
       <span className="block max-w-55 truncate">
-        {getValue()}
+        {getValue() as string}
       </span>
     ),
     accessorFn: (row) =>
@@ -49,7 +49,7 @@ export const columns = (handleDelete: (unitId: number) => void): ColumnDef<Unit>
   {
     accessorKey: 'rentable',
     header: 'Rentable',
-    cell: ({ getValue }) => (
+    cell: ({}) => (
       <div className='w-14 h-8 bg-blue rounded-2xl flex justify-end items-center pr-1 cursor-pointer'>
         <div className='size-6 bg-white rounded-full'></div>
       </div>
@@ -74,7 +74,7 @@ export const columns = (handleDelete: (unitId: number) => void): ColumnDef<Unit>
   {
     id: 'actions',
     header: '',
-    cell: ({ getValue, row }) => (
+    cell: ({ row }) => (
       <div>
         <Drawer direction="right" handleOnly>
           <DropdownMenu>
@@ -112,8 +112,8 @@ export const columns = (handleDelete: (unitId: number) => void): ColumnDef<Unit>
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                      <AlertDialogCancel className='px-4 py-2 rounded-2xl text-base'>Cancel</AlertDialogCancel>
-                      <AlertDialogAction className='px-4 py-2 rounded-lg bg-[rgba(237,79,157,1)] text-base' onClick={() => handleDelete(row.original.id)}>Delete</AlertDialogAction>
+                      <AlertDialogCancel className='px-5 py-3 rounded-lg font-semibold border'>Cancel</AlertDialogCancel>
+                      <AlertDialogAction className='text-white' onClick={() => handleDelete(row.original.id)}>Delete</AlertDialogAction>
                     </AlertDialogFooter>
                   </AlertDialogContent>
                 </AlertDialog>

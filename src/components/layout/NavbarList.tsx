@@ -6,13 +6,14 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { useFacilities } from '@/src/utils/hooks/useFacilities';
 import ChevronDown from "@/public/assets/images/chevron-down2.svg"
 import LoadingForm from '@/src/components/ui/LoadingForm';
+import { Unit } from '@/src/table/Types';
 export default function NavbarList() {
   const searchParams = useSearchParams()
   const router = useRouter()
   const pathname = usePathname();
   const activeFilter = Number(searchParams.get('facilityIds')) || null;
   const { data:units, isLoading } = useFacilities();
-  const sortedUnits = units?.data.sort((a, b) => a.id - b.id);
+  const sortedUnits = (units?.data as Unit[])?.sort((a, b) => a.id - b.id);
   console.log({ units })
   const handleClick = (id: number | null) => {
     const params = new URLSearchParams(searchParams.toString());

@@ -4,6 +4,7 @@ import FilterForm from "@/src/components/home/FilterForm"
 import FilterIcon from '@/public/assets/images/filter.svg'
 import useFilterParams from "@/src/utils/hooks/useFilterParams"
 import CloseFilter from '@/public/assets/images/closeFilter.svg'
+import { cn } from "@/src/lib/utils"
 export default function DrawerScrollableContent() {
     const defaultMinPrice = 0;
     const defaultMaxPrice = 120;
@@ -15,16 +16,10 @@ export default function DrawerScrollableContent() {
     return (
         <Drawer direction="right" handleOnly>
             <DrawerTrigger asChild>
-                {filterCount > 0 ?
-                    <Button className="cursor-pointer bg-[rgba(238,249,255,1)] py-1.5 px-3" variant={'destructive'}>
-                        <FilterIcon className="size-6 text-blue-500 mt-1" />
-                        <span className="text-sm font-bold leading-[160%] text-blue">Filter ({filterCount}) </span>
-                    </Button>
-                    :
-                    <Button className="cursor-pointer" variant={'destructive'}>
-                        <FilterIcon className="size-6 mt-1" />
-                        <span className="text-sm font-medium leading-[160%] text-primary">Filter</span>
-                    </Button>}
+                <Button className={cn(filterCount > 0 ? "cursor-pointer bg-[rgba(238,249,255,1)] py-1.5 px-3" : "cursor-pointer bg-white")} variant={'destructive'}>
+                    <FilterIcon className={cn(filterCount > 0 ? "size-6 [&_path]:stroke-blue" : "size-6")} />
+                    <span className={cn(filterCount > 0 ? " text-blue font-bold" : "text-primary font-medium", "text-sm leading-[160%]")}>Filter {filterCount > 0 ? `(${filterCount})` : null} </span>
+                </Button>
             </DrawerTrigger>
             <DrawerContent className="my-6 mr-6 rounded-2xl data-[vaul-drawer-direction=right]:sm:max-w-90">
                 <DrawerHeader className="px-4 pt-3 pb-2 bg-blue">

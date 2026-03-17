@@ -12,6 +12,8 @@ const buttonVariants = cva(
         default: "px-7 py-2.25 rounded-xl text-white text-sm font-bold leading-[160%] bg-[rgba(19,109,162,1)]",
         destructive:
           "bg-transparent",
+        delete:"px-7 py-2 bg-[rgba(237,79,157,1)] text-sm font-semibold rounded-lg",
+        cancel:"px-7 py-2 bg-[rgba(237,79,157,1)] text-sm font-semibold rounded-lg",
         outline:
           "border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50",
         secondary:
@@ -24,6 +26,7 @@ const buttonVariants = cva(
     defaultVariants: {
       variant: "default",
     },
+    
   }
 )
 

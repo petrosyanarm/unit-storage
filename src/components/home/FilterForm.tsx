@@ -15,7 +15,7 @@ import useFilterParams from "@/src/utils/hooks/useFilterParams";
 import { selectClassNames } from "@/src/components/ui/selectClassNames";
 import Price from '@/public/assets/images/price.svg'
 import CheckboxOption from "./CheckboxOption";
-import { Option, VariantProps } from "@/src/table/Types";
+import { Val, VariantProps } from "@/src/table/Types";
 export default function FilterForm() {
     const router = useRouter();
     const pathname = usePathname()
@@ -98,13 +98,15 @@ export default function FilterForm() {
                                 render={({ field }) => (
                                     <Input
                                         label="Minimum"
-                                        type='number'
+                                        type="number"
                                         {...field}
-                                        placeholder=""
                                         className="mt-2 relative appearance-none! [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-moz-appearance]:textfield"
                                         error={errors.minPrice}
+                                        onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                                        value={field.value ?? ""}
                                     />
-                                )} />
+                                )}
+                            />
                             <Price className="absolute top-10 left-24 size-10" />
                         </div>
                         <div className="flex relative">
@@ -118,6 +120,8 @@ export default function FilterForm() {
                                         {...field}
                                         className="mt-2 relative appearance-none! [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-moz-appearance]:textfield"
                                         error={errors.maxPrice}
+                                        onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                                        value={field.value ?? ""}
                                     />
                                 )}
                             />
@@ -139,7 +143,7 @@ export default function FilterForm() {
                                     components={{ Option: CheckboxOption }}
                                     closeMenuOnSelect={false}
                                     hideSelectedOptions={false}
-                                    value={unitSizesOptions?.filter(opt =>
+                                    value={unitSizesOptions?.filter((opt: Val) =>
                                         field.value?.includes(opt.value)
                                     )}
                                     onChange={(options) => {
@@ -165,7 +169,7 @@ export default function FilterForm() {
                                     components={{ Option: CheckboxOption }}
                                     closeMenuOnSelect={false}
                                     hideSelectedOptions={false}
-                                    value={featuresOptions?.filter((opt: Option[]) =>
+                                    value={featuresOptions?.filter((opt: Val) =>
                                         field.value?.includes(opt.value)
                                     )}
                                     onChange={(options) =>
@@ -182,7 +186,7 @@ export default function FilterForm() {
                         <Controller name='unitTypeId' control={control}
                             render={({ field }) => (
                                 <div className="flex gap-2">
-                                    {unitTypeOptions?.map((item) => (
+                                    {unitTypeOptions?.map((item: Val) => (
                                         <Button type="button" key={item.value} onClick={() => {
                                             const newValues = field.value?.includes(item.value)
                                                 ? field.value.filter(v => v !== item.value)

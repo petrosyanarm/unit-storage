@@ -11,7 +11,7 @@ type FormSelectProps<T extends FieldValues,OptionType=Option> = {
     options?: Option[];
     classNames?: ClassNamesConfig<Option, boolean>;
     placeholder: string;
-    error?: FieldError;
+    error?: FieldError | undefined;
     multi?: boolean;
     isLoading?:boolean,
     isDisabled?:boolean
@@ -39,7 +39,6 @@ export default function FormSelect({ name, label, required, control, options, cl
                             field.onChange(value);
                             setFacilityId(value);
                             onFacilityChange?.(value);
-                            console.log("Selected facilityId:", value);
                         }}
                         isMulti={multi}
                         components={components}

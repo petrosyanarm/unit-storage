@@ -15,7 +15,7 @@ import { useCreateUnit } from '@/src/utils/hooks/useCreateUnit';
 import CreateDimensionList from '@/src/components/home/CreateDimensionLIst';
 import { selectClassNames } from '@/src/components/ui/selectClassNames';
 import { useFacilityStore } from '@/src/store/useFacilityStore';
-import { Dimension } from '@/src/table/Types';
+import { Dimension, DimensionOptions } from '@/src/table/Types';
 import { VariantProps } from '@/src/table/Types';
 
 export default function CreateUnitForm() {
@@ -46,26 +46,26 @@ export default function CreateUnitForm() {
     const facilityId = useFacilityStore((state) => state.facilityId);
     const facilityIds = facilityId ? [facilityId] : [];
     const { data: dimensions, isLoading: isLoadingDimensions } = useDimensions(facilityIds);
-    const dimensionsOptions = dimensions?.data.map((item:Dimension) => ({
+    const dimensionsOptions = dimensions?.data.map((item:DimensionOptions) => ({
         value: item.id,
         label: `${item.x}x${item.y}x${item.z}`
     }))
     const { data } = useUnits();
     const units = data?.facilityList
-    const facilityOptions = units?.map((item:VariantProps) => ({
+    const facilityOptions = units?.map((item: VariantProps) => ({
         value: item.id,
         label: item.name,
     }));
     const { data: pricingGroup } = usePricingGroup()
-    const pricingGroupOptions = pricingGroup?.data.map((item:VariantProps) => ({
+    const pricingGroupOptions = pricingGroup?.data.map((item: VariantProps) => ({
         value: item.id,
         label: item.name,
     }));
-    const unitTypeOptions = data?.filterList?.[1]?.filterOptions?.map((item:VariantProps) => ({
+    const unitTypeOptions = data?.filterList?.[1]?.filterOptions?.map((item: VariantProps) => ({
         value: item.id,
         label: item.name
     }));
-    const featuresOptions = data?.filterList?.[0]?.filterOptions?.map((item:VariantProps) => ({
+    const featuresOptions = data?.filterList?.[0]?.filterOptions?.map((item: VariantProps) => ({
         value: item.id,
         label: item.name
     }));
@@ -106,8 +106,8 @@ export default function CreateUnitForm() {
                         error={errors.unitDimensionsId}
                         required
                         classNames={selectClassNames}
-                        isLoading={isLoadingDimensions}
-                        isDisabled={!dimensionsOptions?.length}
+                        isDisabled={!facilityId}
+                        isLoading={facilityId ? isLoadingDimensions : false}
                     />
                 </div>
                 <div>
@@ -120,27 +120,34 @@ export default function CreateUnitForm() {
                         error={errors.pricingGroupId}
                         required
                         classNames={selectClassNames}
-                        isLoading={isLoadingDimensions}
-                        isDisabled={!dimensionsOptions?.length}
                     />
                 </div>
                 <div>
-                    <FormSelect
-                        name="filters.1.selectedOptions"
-                        control={control}
-                        label="Unit Type"
-                        options={unitTypeOptions}
-                        placeholder="Select Unit Type"
-                        error={errors.filters?.[1]?.selectedOptions}
-                        required
-                        classNames={selectClassNames}
+                    <label className="font-medium text-sm leading-[160%] text-[rgba(71,85,105,1)]">
+                        Unit Types <span className="text-[rgba(237,79,157,1)]">*</span>
+                    </label>
+                      <Controller name="filters.1.selectedOptions" control={control}
+                        render={({ field }) => (
+                            <Select
+                                options={unitTypeOptions}
+                                classNames={selectClassNames}
+                                placeholder={'Select Unit Type'}
+                                isClearable={false}
+                                closeMenuOnSelect={false}
+                                hideSelectedOptions={false}
+                                onChange={(option:{value:number | null; label:string | null}) => {
+                                    field.onChange([option.value]);
+                                    console.log({option})
+                                }}
+                            />
+                        )}
                     />
                 </div>
                 <div>
                     <label className="font-medium text-sm leading-[160%] text-[rgba(71,85,105,1)]">
                         Features <span className="text-[rgba(237,79,157,1)]">*</span>
                     </label>
-                    <Controller name="filters.1.selectedOptions" control={control}
+                    <Controller name="filters.0.selectedOptions" control={control}
                         render={({ field }) => (
                             <Select
                                 options={featuresOptions}
@@ -150,21 +157,18 @@ export default function CreateUnitForm() {
                                 isClearable={false}
                                 closeMenuOnSelect={false}
                                 hideSelectedOptions={false}
-                                value={featuresOptions?.find(
-                                    option => option.value === field.value
-                                )}
+                                value={featuresOptions?.find((option:{value:number[]}) => option.value === field.value)}
                                 onChange={option => {
                                     console.log({ option });
                                     const values = option.map(({ value }) => value)
-                                    console.log({ values });
                                     field.onChange(values)
                                 }}
                             />
                         )}
                     />
-                    {errors.filters?.[1]?.selectedOptions && (
+                    {errors.filters?.[0]?.selectedOptions && (
                         <p className="text-[rgba(237,79,157,1)] text-sm mt-1">
-                            {errors.filters?.[1]?.selectedOptions.message}
+                            {errors.filters?.[0]?.selectedOptions.message}
                         </p>
                     )}
 
@@ -199,7 +203,7 @@ export default function CreateUnitForm() {
                             label='Door Width(ft)'
                             required
                             type='number'
-                            {...register('width')}
+                            {...register('width', { valueAsNumber: true })}
                             placeholder="Door Width(ft)"
                             className="mt-2 appearance-none! [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-moz-appearance]:textfield"
                             error={errors.width}
@@ -210,7 +214,7 @@ export default function CreateUnitForm() {
                             label='Door Height(ft)'
                             required
                             type='number'
-                            {...register('height')}
+                            {...register('height', { valueAsNumber: true })}
                             placeholder="Door Height(ft)"
                             className="mt-2 appearance-none! [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-moz-appearance]:textfield"
                             error={errors.height}
