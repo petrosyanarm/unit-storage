@@ -9,8 +9,7 @@ export const useEditUnit = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({ unitId, data }: EditUnitParams) => updateUnit(unitId, data),
-    onSuccess: (data) => {
-      console.log("updated unit", data);
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["units"] });
     },
   });

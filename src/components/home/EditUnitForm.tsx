@@ -168,7 +168,9 @@ export default function EditUnitForm({ unitId }: Props) {
                                             onChange={(options) => {
                                                 const values = options.map(opt => opt.value)
                                                 field.onChange(values);
-                                            }} />
+                                            }}
+                                            instanceId="featuresOptions"
+                                        />
                                     )
                                 }}
                             />

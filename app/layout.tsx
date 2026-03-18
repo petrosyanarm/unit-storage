@@ -5,6 +5,8 @@ import QueryProvider from "@/src/providers/QueryProvider";
 import Sidebar from "@/src/components/layout/Sidebar";
 import Navbar from "@/src/components/layout/Navbar";
 import {Toaster} from 'react-hot-toast'
+export const dynamic = 'force-dynamic'
+
 const poppins = Poppins({
   variable: "--font-poppins",
   weight: ["400", "500", "600", "700"],
@@ -28,7 +30,7 @@ export default function RootLayout({
         <QueryProvider>
           <Toaster position="top-right" reverseOrder={true} />
           <Sidebar />
-          <div className="ml-[249px] overflow-y-auto overflow-x-hidden h-screen">
+          <div className="ml-62.25 overflow-y-auto overflow-x-hidden h-screen">
             <Navbar />
             {children}
           </div>

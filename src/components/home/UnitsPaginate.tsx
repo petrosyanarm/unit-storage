@@ -17,7 +17,6 @@ export default function UnitsPaginate({ totalPages }: { totalPages: number }) {
   const page = Number(searchParams.get('page')) || 1
   const handlePageChange = ({ selected }: { selected: number }) => {
     const params = new URLSearchParams(searchParams.toString());
-    console.log({ params })
     params.set('page', (selected + 1).toString());
     router.replace(`?${params.toString()}`);
   }

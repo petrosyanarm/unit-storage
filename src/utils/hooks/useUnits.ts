@@ -17,7 +17,7 @@ export const useUnits = () => {
       pageSize,
       facilityIds: facilityIds ?? undefined,
       name,
-      filters:filters.length ? filters : undefined,
+      filters: filters.length ? filters : undefined,
       minPrice,
       maxPrice,
       sizes: sizes.length ? sizes : undefined,
@@ -29,7 +29,6 @@ export const useUnits = () => {
     queryKey: ["units", keys],
     queryFn: () => {
       const params = getParams();
-      console.log({ params });
       return getUnits(params);
     },
   });

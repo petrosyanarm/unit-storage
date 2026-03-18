@@ -76,12 +76,12 @@ export default function FilterForm() {
     return (
         <div className="max-h-[calc(100vh-168px)]">
             <form className="pt-4 px-4  flex flex-col justify-between" onSubmit={handleSubmit(onSubmit)}>
-                <div className="space-y-6">
+                <div className="space-y-6 min-h-150">
                     <label className="font-medium text-sm leading-[160%] text-[rgba(71,85,105,1)]">
                         Unit Price Range
                     </label>
                     <Slider
-                        value={[minPrice, maxPrice] as [number, number]}
+                        value={[minPrice ?? 0, maxPrice ?? 0] as [number, number]}
                         onValueChange={(value) => {
                             setValue("minPrice", value[0]);
                             setValue("maxPrice", value[1]);
@@ -103,7 +103,7 @@ export default function FilterForm() {
                                         className="mt-2 relative appearance-none! [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-moz-appearance]:textfield"
                                         error={errors.minPrice}
                                         onChange={(e) => field.onChange(e.target.valueAsNumber)}
-                                        value={field.value ?? ""}
+                                        value={field.value ?? undefined}
                                     />
                                 )}
                             />
@@ -121,7 +121,7 @@ export default function FilterForm() {
                                         className="mt-2 relative appearance-none! [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-moz-appearance]:textfield"
                                         error={errors.maxPrice}
                                         onChange={(e) => field.onChange(e.target.valueAsNumber)}
-                                        value={field.value ?? ""}
+                                        value={field.value ?? undefined}
                                     />
                                 )}
                             />
@@ -150,6 +150,7 @@ export default function FilterForm() {
                                         const values = options.map(({ value }) => value)
                                         field.onChange(values)
                                     }}
+                                    instanceId="unitSize" 
                                 />
                             )}
                         />
@@ -175,6 +176,7 @@ export default function FilterForm() {
                                     onChange={(options) =>
                                         field.onChange(options.map(opt => opt.value))
                                     }
+                                    instanceId="featuresOptions" 
                                 />
                             )}
                         />

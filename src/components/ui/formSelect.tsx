@@ -1,9 +1,10 @@
+'use client'
 import { useFacilityStore } from "@/src/store/useFacilityStore";
 import { Option } from "@/src/table/Types";
-import { FieldValues,Controller, Control, FieldError,Path } from "react-hook-form";
+import { FieldValues, Controller, Control, FieldError, Path } from "react-hook-form";
 import Select from "react-select";
 
-type FormSelectProps<T extends FieldValues,OptionType=Option> = {
+type FormSelectProps<T extends FieldValues, OptionType = Option> = {
     name: Path<T>;
     label: string;
     required: boolean;
@@ -13,12 +14,12 @@ type FormSelectProps<T extends FieldValues,OptionType=Option> = {
     placeholder: string;
     error?: FieldError | undefined;
     multi?: boolean;
-    isLoading?:boolean,
-    isDisabled?:boolean
+    isLoading?: boolean,
+    isDisabled?: boolean
     onFacilityChange?: (value: number | null) => void;
     components?: React.ComponentProps<typeof Select>['components'];
 }
-export default function FormSelect<T extends FieldValues>({ name, label, required, control, options, classNames, placeholder, error, multi, onFacilityChange,isLoading,isDisabled, components }: FormSelectProps<T>) {
+export default function FormSelect<T extends FieldValues>({ name, label, required, control, options, classNames, placeholder, error, multi, onFacilityChange, isLoading, isDisabled, components }: FormSelectProps<T>) {
     const setFacilityId = useFacilityStore((state) => state.setFacilityId);
     return (
         <div>
@@ -34,8 +35,8 @@ export default function FormSelect<T extends FieldValues>({ name, label, require
                         value={options?.find(
                             option => option.value === field.value
                         )}
-                        onChange={(option:any) => {
-                            const value = option?.value ?? null;
+                        onChange={(newValue) => {
+                            const value = (newValue as Option | null)?.value ?? null;
                             field.onChange(value);
                             setFacilityId(value);
                             onFacilityChange?.(value);
@@ -44,6 +45,7 @@ export default function FormSelect<T extends FieldValues>({ name, label, require
                         components={components}
                         isLoading={isLoading}
                         isDisabled={isDisabled}
+                        instanceId={'d'}
                     />
                 )}
             />

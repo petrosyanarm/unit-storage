@@ -1,7 +1,7 @@
 'use client';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import Select, {  SingleValue } from 'react-select'
+import Select, { SingleValue } from 'react-select'
 import { unitSchema, UnitFormValues } from '@/src/utils/shchema/CreateShchema';
 import { Input } from '@/src/components/ui/input';
 import { useUnits } from '@/src/utils/hooks/useUnits';
@@ -45,7 +45,7 @@ export default function CreateUnitForm() {
 
     const facilityId = useFacilityStore((state) => state.facilityId);
     const facilityIds = facilityId ? [facilityId] : [];
-    const { data: dimensions, isLoading: isLoadingDimensions } = useDimensions(facilityIds);
+    const { data: dimensions } = useDimensions(facilityIds);
     const dimensionsOptions = dimensions?.data.map((item: DimensionOptions) => ({
         value: item.id,
         label: `${item.x}x${item.y}x${item.z}`
@@ -107,7 +107,6 @@ export default function CreateUnitForm() {
                         required
                         classNames={selectClassNames}
                         isDisabled={!facilityId}
-                        isLoading={facilityId ? isLoadingDimensions : false}
                     />
                 </div>
                 <div>
@@ -139,9 +138,10 @@ export default function CreateUnitForm() {
                                     if (option) {
                                         field.onChange([option.value])
                                     } else {
-                                        field.onChange([]); 
+                                        field.onChange([]);
                                     }
                                 }}
+                                instanceId="unitType"
                             />
                         )}
                     />
@@ -162,10 +162,10 @@ export default function CreateUnitForm() {
                                 hideSelectedOptions={false}
                                 value={featuresOptions?.find((option: { value: number[] }) => option.value === field.value)}
                                 onChange={option => {
-                                    console.log({ option });
                                     const values = option.map(({ value }) => value)
                                     field.onChange(values)
                                 }}
+                                instanceId="features"
                             />
                         )}
                     />

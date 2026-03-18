@@ -1,7 +1,6 @@
-import { components,MenuListProps } from "react-select";
+import { components, MenuListProps } from "react-select";
 import { Button } from "@/src/components/ui/button";
 import { useDrawerStore } from "@/src/store/useDrawerStore";
-import { Option } from "@/src/table/Types";
 export default function CreateDimensionList<OptionType = unknown>(
   props: MenuListProps<OptionType, false>) {
   const { setOpenDimension } = useDrawerStore()
@@ -11,7 +10,7 @@ export default function CreateDimensionList<OptionType = unknown>(
         <Button
           type="button"
           variant={'destructive'}
-          className="text-blue font-semibold " 
+          className="text-blue font-semibold "
         >
           Create New Dimensions
         </Button>

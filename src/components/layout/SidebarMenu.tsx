@@ -17,7 +17,7 @@ export default function SidebarMenu() {
                     <li key={item.id} className='px-3 py-3 '>
                         <div onClick={() => setOpendropdown(openDropdown === item.id ? null : item.id)} className='flex items-center justify-between cursor-pointer'>
                             <div className='flex gap-4'>
-                                <item.icon />
+                                <item.icon className="size-5" />
                                 <Link href={'/'} className='text-primary text-base font-medium leading-[150%]' >
                                     {item.title}
                                 </Link>

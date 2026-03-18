@@ -14,10 +14,8 @@ export default function NavbarList() {
   const activeFilter = Number(searchParams.get('facilityIds')) || null;
   const { data:units, isLoading } = useFacilities();
   const sortedUnits = (units?.data as Unit[])?.sort((a, b) => a.id - b.id);
-  console.log({ units })
   const handleClick = (id: number | null) => {
     const params = new URLSearchParams(searchParams.toString());
-    console.log(activeFilter)
 
     if (id === null) {
       params.delete('facilityIds');
@@ -28,7 +26,6 @@ export default function NavbarList() {
     params.set('page', '1')
     router.push(`${pathname}?${params.toString()}`);
   }
-  console.log({ isLoading });
 
   return (
     <div>

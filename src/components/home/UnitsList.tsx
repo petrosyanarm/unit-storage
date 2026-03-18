@@ -21,7 +21,6 @@ export default function UnitsList() {
     const { data, isLoading } = useUnits();
     useEffect(() => {
         const params = new URLSearchParams(searchParams.toString());
-        console.log({ debouncedQuery })
         if (debouncedQuery) {
             params.set('name', debouncedQuery);
         } else {
