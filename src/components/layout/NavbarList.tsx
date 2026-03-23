@@ -32,10 +32,10 @@ export default function NavbarList() {
 
   const containerRef = useRef<HTMLDivElement>(null);
   const MORE_WIDTH = 70;
-  const [displayedItems, setDisplayedItems] = useState<Unit[]>([]);
-  const [hiddedItems, setHiddedItems] = useState<Unit[]>([])
   const GAP_WIDTH = 32;
   const LETTER_WIDTH = 9.5;
+  const [displayedItems, setDisplayedItems] = useState<Unit[]>([]);
+  const [hiddedItems, setHiddedItems] = useState<Unit[]>([])
 
   useEffect(() => {
     const foo = () => {
@@ -57,7 +57,6 @@ export default function NavbarList() {
         else {
           newHiddedItems.push(item)
         }
-
       })
       setDisplayedItems(newDisplayedItems);
       setHiddedItems(newHiddedItems)
@@ -96,7 +95,7 @@ export default function NavbarList() {
                     <ChevronDown className="size-4.5" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className='overflow-y-auto w-35 mt-2 mr-4 min-h-57 flex flex-col justify-center [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-thumb]:rounded-full'>
+                <DropdownMenuContent className='overflow-y-auto w-35 mt-2 mr-4 flex flex-col justify-center [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-thumb]:rounded-full'>
                   {hiddedItems.map((item) => (
                     <DropdownMenuItem className='max-h-13.75 pt-2 pb-3 cursor-pointer' onClick={() => handleClick(item.id)} key={item.id} variant="destructive">
                       {item.name}

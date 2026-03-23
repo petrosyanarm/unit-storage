@@ -41,7 +41,7 @@ export default function UnitsTable({ data = [] }: Props) {
     }
   }, []);
   return (
-    <div ref={tableRef} className="w-full overflow-x-auto  min-h-[calc(100vh-400px)] [scrollbar-width:thin] [scrollbar-color:rgba(0,0,0,0.2)_transparent] [-ms-overflow-style:none] [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-thumb]:bg-black/20  [&::-webkit-scrollbar-thumb]:rounded-[3px] [&::-webkit-scrollbar-track]:bg-transparent">
+    <div ref={tableRef} className="w-full overflow-x-auto min-h-[calc(100vh-400px)] [scrollbar-width:thin] [scrollbar-color:rgba(0,0,0,0.2)_transparent] [-ms-overflow-style:none] [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-thumb]:bg-black/20  [&::-webkit-scrollbar-thumb]:rounded-[3px] [&::-webkit-scrollbar-track]:bg-transparent">
       <table className="w-full table-auto relative">
         <thead className="h-16">
           {table.getHeaderGroups().map(headerGroup => (
