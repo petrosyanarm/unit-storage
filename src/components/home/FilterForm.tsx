@@ -8,7 +8,6 @@ import { filterShchema, FilterFormValues } from '@/src/utils/shchema/FilterShche
 import { Button } from "@/src/components/ui/button";
 import { useUnits } from "@/src/utils/hooks/useUnits";
 import { useUnitSizes } from "@/src/utils/hooks/useUnitSizes";
-import { twMerge } from "tailwind-merge";
 import { usePathname, useRouter } from "next/navigation";
 import { DrawerClose, DrawerFooter } from "@/src/components/ui/drawer";
 import useFilterParams from "@/src/utils/hooks/useFilterParams";
@@ -16,6 +15,7 @@ import { selectClassNames } from "@/src/components/ui/selectClassNames";
 import Price from '@/public/assets/images/price.svg'
 import CheckboxOption from "./CheckboxOption";
 import { Val, VariantProps } from "@/src/table/Types";
+import { cn } from "@/src/lib/utils";
 export default function FilterForm() {
     const router = useRouter();
     const pathname = usePathname()
@@ -41,7 +41,7 @@ export default function FilterForm() {
         watch,
         control,
         formState: { errors },
-        
+
     } = useForm<FilterFormValues>({
         resolver: zodResolver(filterShchema),
         defaultValues: {
@@ -151,7 +151,7 @@ export default function FilterForm() {
                                         const values = options.map(({ value }) => value)
                                         field.onChange(values)
                                     }}
-                                    instanceId="unitSize" 
+                                    instanceId="unitSize"
                                 />
                             )}
                         />
@@ -177,7 +177,7 @@ export default function FilterForm() {
                                     onChange={(options) =>
                                         field.onChange(options.map(opt => opt.value))
                                     }
-                                    instanceId="featuresOptions" 
+                                    instanceId="featuresOptions"
                                 />
                             )}
                         />
@@ -195,7 +195,7 @@ export default function FilterForm() {
                                                 ? field.value.filter(v => v !== item.value)
                                                 : [...(field.value || []), item.value]
                                             field.onChange(newValues)
-                                        }} className={twMerge(field.value?.includes(item.value) ? "border border-blue bg-white" : "bg-white border border-gray-200", "px-12.5 py-4 text-blue text-sm font-semibold leading-[150%]")}>{item.label}</Button>
+                                        }} className={cn(field.value?.includes(item.value) ? "border border-blue bg-white" : "bg-white border border-gray-200", "px-12.5 py-4 text-blue text-sm font-semibold leading-[150%]")}>{item.label}</Button>
                                     ))}
                                 </div>
                             )} />

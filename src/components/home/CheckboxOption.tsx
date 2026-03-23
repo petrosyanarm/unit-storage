@@ -1,5 +1,5 @@
 import { Option } from "@/src/table/Types";
-import { components,OptionProps } from "react-select";
+import { components, OptionProps } from "react-select";
 export default function CheckboxOption(props: OptionProps<Option, true>) {
   return (
     <components.Option {...props}>

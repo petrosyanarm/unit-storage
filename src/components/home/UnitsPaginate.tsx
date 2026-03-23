@@ -5,9 +5,10 @@ import ChevronLeft from "@/public/assets/images/chevron-left.svg"
 import ChevronRight from "@/public/assets/images/chevron-right.svg"
 import { useForm } from "react-hook-form";
 import Select from "react-select";
+import { cn } from "@/src/lib/utils";
 export const selectPageClassNames = {
   control: ({ isFocused }: { isFocused: boolean }) =>
-    `!h-[56px] !w-[123px] !rounded-xl !border-[rgba(226,232,240,1)] !cursor-pointer ${isFocused ? "!border" : null} !shadow-none !hover:border-blue-400 !mt-2`,
+    cn('!h-[56px] !w-[123px] !rounded-xl !border-[rgba(226,232,240,1)] !cursor-pointer', isFocused ? "!border" : null,'!shadow-none !hover:border-blue-400 !mt-2'),
   indicatorSeparator: () => "hidden",
 }
 export default function UnitsPaginate({ totalPages }: { totalPages: number }) {
@@ -46,7 +47,7 @@ export default function UnitsPaginate({ totalPages }: { totalPages: number }) {
             params.set("pageSize", String(option?.value));
             router.replace(`${pathname}?${params.toString()}`);
           }}
-          instanceId="pageSize" 
+          instanceId="pageSize"
         />
       </div>
       {totalPages > 1 && (

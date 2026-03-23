@@ -39,15 +39,15 @@ export default function UnitsList() {
                 <div className="px-6 pt-6  ">
                     <div className="border-b border-b-[rgba(225,239,248,1)] flex justify-between">
                         <div className="pl-3 pt-2">
-                            <span className="text-primary font-medium leading-[150%]">All {totalUnits} Units</span>
+                            <span className="text-sm lg:text-base text-primary font-medium leading-[150%]">All {totalUnits} Units</span>
                         </div>
-                        <div className="flex gap-4 items-center pb-3">
+                        <div className="flex gap-2 lg:gap-4 items-center pb-3">
                             <div className="flex gap-2 px-3">
                                 <FIlterModal />
                             </div>
                             <div className="relative">
-                                <input type="text" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search..." className="max-w-65.75 w-full pl-12 py-1.75 border rounded-xl focus:outline-none border-[rgba(226,232,240,1)] placeholder:text-sm font-normal leading-[160%] text-primary" />
-                                <div className="absolute top-3 left-4">
+                                <input type="text" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search..." className="max-w-29 lg:max-w-65.75 w-full pl-10 lg:pl-12 py-1.75 border rounded-xl focus:outline-none border-[rgba(226,232,240,1)] placeholder:text-xs lg:placeholder:text-sm font-normal leading-[160%] text-primary" />
+                                <div className="absolute top-3 left-3 lg:left-4">
                                     <Search className="size-5" />
                                 </div>
                             </div>

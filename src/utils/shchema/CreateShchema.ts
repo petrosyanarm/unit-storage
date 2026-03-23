@@ -24,7 +24,7 @@ export const unitSchema = z.object({
     }),
     z.object({
       filterId: z.number(),
-       selectedOptions: z
+      selectedOptions: z
         .array(z.number())
         .min(1, "At least one option must be selected"),
     }),
@@ -32,4 +32,3 @@ export const unitSchema = z.object({
 });
 
 export type UnitFormValues = z.infer<typeof unitSchema>;
-

@@ -6,7 +6,7 @@ import Location from '@/public/assets/images/location.svg'
 import NavbarUser from '@/public/assets/images/navbarUser.png'
 import { useState } from 'react'
 import { Button } from '@/src/components/ui/button'
-import { twMerge } from 'tailwind-merge'
+import { cn } from '@/src/lib/utils'
 export default function SidebarMenu() {
     const [openDropdown, setOpendropdown] = useState<number | null>(null);
     const [activeOption, setActiveOption] = useState<number | null>(null)
@@ -25,7 +25,7 @@ export default function SidebarMenu() {
                             {item.id !== 1 &&
                                 <div>
                                     <Button variant={'destructive'} className='mt-1.5'>
-                                        <item.select className={twMerge('transition-transform duration-300 size-5.5', openDropdown === item.id ? 'rotate-90' : '')} />
+                                        <item.select className={cn('transition-transform duration-300 size-5.5', openDropdown === item.id ? 'rotate-90' : '')} />
                                     </Button>
                                 </div>
                             }
@@ -33,7 +33,7 @@ export default function SidebarMenu() {
                         {item.children && openDropdown === item.id && (
                             <ul className='pl-5 ml-2 border-l-4 border-l-[rgba(241,245,249,1)] '>
                                 {item.children.map((item, idx) => (
-                                    <li key={idx} onClick={() => setActiveOption(idx)} className={twMerge(activeOption === idx ? "bg-[rgba(241,245,249,1)] " : 'bg-white', "pl-4 py-3 mt-3 text-base font-medium leading-[150%] text-[rgba(71,85,105,1)] rounded-xl cursor-pointer")}>{item.title}</li>
+                                    <li key={idx} onClick={() => setActiveOption(idx)} className={cn(activeOption === idx ? "bg-[rgba(241,245,249,1)] " : 'bg-white', "pl-4 py-3 mt-3 text-base font-medium leading-[150%] text-[rgba(71,85,105,1)] rounded-xl cursor-pointer")}>{item.title}</li>
                                 ))}
                             </ul>
                         )}

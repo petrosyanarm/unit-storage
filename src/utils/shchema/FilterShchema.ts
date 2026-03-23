@@ -1,14 +1,8 @@
 import { z } from "zod";
 export const filterShchema = z.object({
-  minPrice: z
-    .number()
-    .min(0, "Minimum must be greater than 0")
-    .optional(),
+  minPrice: z.number().min(0, "Minimum must be greater than 0").optional(),
 
-  maxPrice: z
-    .number()
-    .min(0, "Maximum must be greater than 0")
-    .optional(),
+  maxPrice: z.number().min(0, "Maximum must be greater than 0").optional(),
 
   unitSizesOptions: z.array(z.number()).optional(),
 

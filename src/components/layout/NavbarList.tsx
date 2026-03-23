@@ -1,13 +1,13 @@
 "use client"
 import { useRouter, useSearchParams, usePathname } from 'next/navigation'
-import { twMerge } from 'tailwind-merge'
 import { Button } from '@/src/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, } from "@/src/components/ui/dropdown-menu"
 import { useFacilities } from '@/src/utils/hooks/useFacilities';
 import ChevronDown from "@/public/assets/images/chevron-down2.svg"
 import LoadingForm from '@/src/components/ui/LoadingForm';
 import { Unit } from '@/src/table/Types';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { cn } from '@/src/lib/utils';
 export default function NavbarList() {
   const searchParams = useSearchParams()
   const router = useRouter()
@@ -15,7 +15,8 @@ export default function NavbarList() {
   const activeFilter = Number(searchParams.get('facilityIds')) || null;
   const { data: units, isLoading } = useFacilities();
   const sortedUnits = (units?.data as Unit[])?.sort((a, b) => a.id - b.id);
-  console.log({ sortedUnits })
+  // const sortedUnits = useMemo(() => (units?.data as Unit[])?.sort((a, b) => a.id - b.id), [units?.data]);
+
   const handleClick = (id: number | null) => {
     const params = new URLSearchParams(searchParams.toString());
 
@@ -30,43 +31,43 @@ export default function NavbarList() {
   }
 
   const containerRef = useRef<HTMLDivElement>(null);
-  const moreRef = useRef<HTMLButtonElement>(null)
-  const ulRef = useRef<HTMLUListElement>(null)
-  const [visibleCount, setVisibleCount] = useState(0);
+  const MORE_WIDTH = 70;
+  const [displayedItems, setDisplayedItems] = useState<Unit[]>([]);
+  const [hiddedItems, setHiddedItems] = useState<Unit[]>([])
+  const GAP_WIDTH = 32;
+  const LETTER_WIDTH = 9.5;
+
   useEffect(() => {
-    const calculate = () => {
-      if (!containerRef.current || !ulRef.current || !moreRef.current || !sortedUnits) return;
-      const containerWidth = containerRef.current?.offsetWidth;
-      console.log({ containerWidth })
-      const items = ulRef.current.children
-      let totalWidth = 0;
-      let count = 0;
-      const moreWidth = (moreRef.current?.offsetWidth || 0) + 30
-      const avaliableWidth = containerWidth - moreWidth;
-      console.log({ avaliableWidth })
-      const style = window.getComputedStyle(ulRef.current);
-      const gap = parseInt(style.gap || '0');
-      for (const item of items) {
-        // console.log({items})
-        totalWidth += (item as HTMLElement).offsetWidth + gap + 10;
-        console.log({ totalWidth })
-        if (avaliableWidth > totalWidth) {
-          count++;
-          // console.log({totalWidth,avaliableWidth})
+    const foo = () => {
+      if (!containerRef.current || !sortedUnits) return;
+      const containerWidth = containerRef.current?.offsetWidth || 0;
+      let totalWidth = 80;
+      const newDisplayedItems: Unit[] = []
+      const newHiddedItems: Unit[] = []
+      sortedUnits?.forEach((item, index) => {
+        const itemWidth = item.name.length * LETTER_WIDTH + GAP_WIDTH;
+        const notNeedsMore = newHiddedItems.length === 0 && index + 1 === sortedUnits?.length
+        const condition = notNeedsMore
+          ? containerWidth > itemWidth + totalWidth
+          : containerWidth - MORE_WIDTH > itemWidth + totalWidth;
+        if (condition && newHiddedItems.length === 0) {
+          totalWidth += itemWidth
+          newDisplayedItems.push(item)
         }
-      }
-      setVisibleCount(count);
+        else {
+          newHiddedItems.push(item)
+        }
+
+      })
+      setDisplayedItems(newDisplayedItems);
+      setHiddedItems(newHiddedItems)
     }
-    // calculate();
-    const observer = new ResizeObserver(calculate);
-    if (containerRef.current) observer.observe(containerRef.current)
-    if (ulRef.current) observer.observe(ulRef.current);
-    return () => {
-      observer.disconnect()
-    }
+    foo()
+    window.addEventListener('resize', foo)
+
+    return () => { window.removeEventListener('resize', foo) }
   }, [sortedUnits])
-  console.log(sortedUnits?.slice(visibleCount))
-  console.log({ visibleCount })
+
   return (
     <div>
       {isLoading ?
@@ -75,34 +76,37 @@ export default function NavbarList() {
         </div>
         :
         <div ref={containerRef} className='px-8 py-5 flex-1 flex justify-between shadow-[0_0_25px_rgba(0,0,0,0.04)]'>
-          <ul ref={ulRef} className='flex gap-3 md:gap-8 pr-2.5'>
-            <li onClick={() => handleClick(null)} className={twMerge(activeFilter === null ? "text-blue font-bold" : " text-primary font-medium", 'text-base leading-[150%] cursor-pointer border-none')}>All</li>
-            {sortedUnits?.slice(0, visibleCount).map((item) => {
-              const isActive = item.id === null
-                ? !activeFilter : item.id === activeFilter;
+          <ul className='flex gap-8 pr-2.5'>
+            <li onClick={() => handleClick(null)} className={cn(activeFilter === null ? "text-blue font-semibold" : "text-primary font-medium", 'text-base leading-[150%] cursor-pointer')}>All</li>
+            {displayedItems.map((item) => {
+              const isActive = item.id === null ? !activeFilter : item.id === activeFilter;
               return (
-                <li onClick={() => handleClick(item.id)} key={item.id} className={twMerge(isActive ? "text-blue font-bold" : " text-primary font-medium", 'text-base leading-[150%] cursor-pointer border-none')}>{item.name}</li>
-              )
+                <li key={item.id} onClick={() => handleClick(item.id)} className={cn(isActive ? "text-blue font-semibold" : "text-primary font-medium", 'text-base leading-[150%] cursor-pointer')}>
+                  {item.name}
+                </li>
+              );
             })}
           </ul>
           <div>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button ref={moreRef} className='font-semibold text-base leading-[150%] px-1 text-primary' variant={'destructive'}>
-                  More
-                  <ChevronDown className="size-4.5" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className='overflow-y-auto w-35 mt-2 mr-4 flex flex-col justify-center'>
-                {sortedUnits?.slice(visibleCount).map((item) => (
-                  <DropdownMenuItem className='max-h-13.75 pt-2 pb-3 cursor-pointer' onClick={() => handleClick(item.id)} key={item.id} variant="destructive">
-                    {item.name}
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
+            {hiddedItems.length > 0 &&
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button className='font-semibold text-base leading-[150%] px-1 text-primary' variant={'destructive'}>
+                    More
+                    <ChevronDown className="size-4.5" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className='overflow-y-auto w-35 mt-2 mr-4 min-h-57 flex flex-col justify-center [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-thumb]:rounded-full'>
+                  {hiddedItems.map((item) => (
+                    <DropdownMenuItem className='max-h-13.75 pt-2 pb-3 cursor-pointer' onClick={() => handleClick(item.id)} key={item.id} variant="destructive">
+                      {item.name}
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>}
           </div>
-        </div>}
+        </div>
+      }
     </div>
   )
 }

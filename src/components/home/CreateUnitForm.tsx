@@ -7,7 +7,6 @@ import { Input } from '@/src/components/ui/input';
 import { useUnits } from '@/src/utils/hooks/useUnits';
 import { useDimensions } from '@/src/utils/hooks/useDimensions';
 import { Button } from '@/src/components/ui/button';
-import { twMerge } from 'tailwind-merge';
 import { usePricingGroup } from '@/src/utils/hooks/usePricingGroup';
 import FormSelect from '@/src/components/ui/formSelect';
 import { DrawerClose } from '@/src/components/ui/drawer';
@@ -17,6 +16,7 @@ import { selectClassNames } from '@/src/components/ui/selectClassNames';
 import { useFacilityStore } from '@/src/store/useFacilityStore';
 import { DimensionOptions, Option } from '@/src/table/Types';
 import { VariantProps } from '@/src/table/Types';
+import { cn } from '@/src/lib/utils';
 
 export default function CreateUnitForm() {
     const {
@@ -189,12 +189,12 @@ export default function CreateUnitForm() {
                                         variant={'destructive'}
                                         type='button'
                                         onClick={() => field.onChange(true)}
-                                        className={twMerge(field.value === true ? 'bg-white' : '', 'py-3 px-25 rounded-lg text-blue')}>Yes</Button>
+                                        className={cn(field.value === true ? 'bg-white' : '', 'py-3 px-25 rounded-lg text-blue')}>Yes</Button>
                                     <Button
                                         type='button'
                                         variant={'destructive'}
                                         onClick={() => field.onChange(false)}
-                                        className={twMerge(field.value === false ? 'bg-white' : '', 'py-3 px-25 rounded-lg text-blue')}>
+                                        className={cn(field.value === false ? 'bg-white' : '', 'py-3 px-25 rounded-lg text-blue')}>
                                         No
                                     </Button>
                                 </div>

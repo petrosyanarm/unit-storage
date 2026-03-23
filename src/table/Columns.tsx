@@ -13,6 +13,7 @@ import EditUnitForm from '@/src/components/home/EditUnitForm';
 
 export const columns = (handleDelete: (unitId: number) => void): ColumnDef<Unit>[] => [
   {
+    id:'name',
     accessorKey: 'name',
     header: 'Unit Name',
     cell: info => info.getValue(),
@@ -75,10 +76,10 @@ export const columns = (handleDelete: (unitId: number) => void): ColumnDef<Unit>
     id: 'actions',
     header: '',
     cell: ({ row }) => (
-      <div>
+      <div className='flex justify-end'>
         <Drawer direction="right" handleOnly>
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
+            <DropdownMenuTrigger asChild >
               <Button variant={'destructive'}>
                 <Dots className="size-6" />
               </Button>
