@@ -6,9 +6,10 @@ import ChevronRight from "@/public/assets/images/chevron-right.svg"
 import { useForm } from "react-hook-form";
 import Select from "react-select";
 import { cn } from "@/src/lib/utils";
+import { useEffect, useState } from "react";
 export const selectPageClassNames = {
   control: ({ isFocused }: { isFocused: boolean }) =>
-    cn('!h-[56px] !w-[123px] !rounded-xl !border-[rgba(226,232,240,1)] !cursor-pointer', isFocused ? "!border" : null,'!shadow-none !hover:border-blue-400 !mt-2'),
+    cn('!h-[56px] !w-[123px] !rounded-xl !border-[rgba(226,232,240,1)] !cursor-pointer', isFocused ? "!border" : null, '!shadow-none !hover:border-blue-400 !mt-2'),
   indicatorSeparator: () => "hidden",
 }
 export default function UnitsPaginate({ totalPages }: { totalPages: number }) {
@@ -32,6 +33,19 @@ export default function UnitsPaginate({ totalPages }: { totalPages: number }) {
       pageSize: pageSizeQuery
     }
   })
+  const [pageRange, setPageRange] = useState(5)
+  useEffect(() => {
+    const handleRange = () => {
+      if (window.innerWidth < 1024) {
+        setPageRange(0)
+      } else {
+        setPageRange(5)
+      }
+    }
+    handleRange();
+    window.addEventListener('resize', handleRange);
+    return () =>{ window.removeEventListener('resize', handleRange)};
+  }, [])
   return (
     <div className="flex justify-between items-center pb-10">
       <div className="flex justify-center items-center gap-2 mt-9">
@@ -55,6 +69,8 @@ export default function UnitsPaginate({ totalPages }: { totalPages: number }) {
           breakLabel="..."
           onPageChange={handlePageChange}
           pageCount={totalPages}
+          pageRangeDisplayed={pageRange}
+          marginPagesDisplayed={0}
           forcePage={page - 1}
           containerClassName="flex gap-2 mt-8"
           pageClassName="rounded-xl !h-[48px] border cursor-pointer flex justify-center items-center"
